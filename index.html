@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Taxes</title>
+
+    <link href="css\main.css" rel="stylesheet">
+</head>
+<body>
+
+
+<main class="taxes">
+
+    <div class="taxes__menu menu">
+        <div class="menu__name">Налоги</div>
+        <div class="menu__buttons">
+            <button class="menu__button button--add">+</button>
+            <button class="menu__button button-remove">x</button>
+        </div>
+
+    </div>
+
+
+    <div class="taxes__title title">
+        <!--<div class="title__item title__number">№ п/п</div>-->
+        <div class="title__item title__data">Дата получения дохода</div>
+        <div class="title__item title__income">Размер дахода</div>
+        <div class="title__item title__currency">Наименование денежной единицы</div>
+    </div>
+
+    <div class="taxes__items">
+
+        <div class="tax">
+            <div class="tax__data">
+            <!--<div class="tax__item tax__number">1</div>-->
+
+            <input class="tax__item tax__data " type="date">
+
+            <input class="tax__item tax__income " type=number placeholder="20000,00">
+
+            <select class="tax__item tax__currency " name="currency">
+                <option value="usd">USD</option>
+                <option value="eur">EUR</option>
+                <option value="rub">RUB</option>
+                <option value="byn">BYN</option>
+            </select>
+
+            </div>
+
+            <button class="tax__button--ok">Ok</button>
+        </div>
+
+    </div>
+
+    <div class="calculate">
+        <div class="calculate__total"></div>
+        <button class="button--calculate">Вычислить</button>
+
+    </div>
+
+</main>
+
+<script src="js/tax-calculation.js"></script>
+
+</body>
+</html>

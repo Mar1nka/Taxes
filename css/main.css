@@ -26,6 +26,9 @@ body {
     max-height: 800px;
     border: 2px solid lightgray;
     padding: 10px 20px;
+
+    max-height: 600px;
+    overflow: auto;
 }
 
 .menu {
@@ -92,7 +95,7 @@ body {
     min-width: 70px;
 }
 
-.title__data, .tax__data {
+.title__data, .tax__date {
     max-width: 150px;
     min-width: 150px;
 }
@@ -114,6 +117,9 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+
+    min-width: 100%;
+
 }
 
 
@@ -126,6 +132,10 @@ body {
 
     min-width: 100%;
 }
+
+/*.tax:hover {*/
+   /*//background: #95c9e7;*/
+/*}*/
 
 .tax__data {
     display: flex;
@@ -142,6 +152,11 @@ body {
     min-height: 40px;
     margin: 2px;
 }
+
+/*.tax__item:hover {*/
+    /*background: #efffff;*/
+    /*transition: background 0.3s;*/
+/*}*/
 
 .tax__number {
     display: flex;
@@ -160,6 +175,7 @@ body {
     color: black;
     border-radius: 5px;
 }
+
 
 .tax__button--ok:hover {
     cursor: pointer;

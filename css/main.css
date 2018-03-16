@@ -23,7 +23,6 @@ body {
 
 .taxes {
     margin-top: 60px;
-    max-height: 800px;
     border: 2px solid lightgray;
     padding: 10px 20px;
 
@@ -52,26 +51,7 @@ body {
     align-items: center;
 }
 
-.menu__button {
-    margin: 0 5px;
-    padding: 5px 10px;
-    border-radius: 5px;
-    color: black;
-}
 
-.menu__button:hover {
-    cursor: pointer;
-    color: white;
-    transition: color 0.3s;
-}
-
-.button--add {
-    background: #8ec78e;
-}
-
-.button-remove {
-    background: #ea736e;
-}
 
 
 .taxes__title {
@@ -153,21 +133,9 @@ body {
     margin: 2px;
 }
 
-/*.tax__item:hover {*/
-    /*background: #efffff;*/
-    /*transition: background 0.3s;*/
-/*}*/
 
-.tax__number {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
 
-.tax__button--ok {
-    align-self: flex-end;
-
+.button--add {
     padding: 5px 10px;
     margin: 10px 0;
 
@@ -177,7 +145,7 @@ body {
 }
 
 
-.tax__button--ok:hover {
+.button--add:hover {
     cursor: pointer;
     transition: color 0.3s;
     color: white;

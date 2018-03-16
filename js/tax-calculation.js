@@ -2,12 +2,88 @@
 class TaxCalculation {
     constructor() {
 
+        this.id = 0;
+        this.taxesList = [];
+
         this.setHandlerAddTask();
+
+        let taxesItemsElement = document.querySelector('.taxes__items');
+        this.focusOutHandler = this.focusOutHandler.bind(this);
+        taxesItemsElement.addEventListener('focusout', this.focusOutHandler);
+
+        this.addTaxHtml();
+
+
+        let buttonCalculate = document.querySelector('.button--calculate');
+        this.buttonCalculateHandler = this.buttonCalculateHandler.bind(this);
+        buttonCalculate.addEventListener('click', this.buttonCalculateHandler);
+        
 
     }
 
+    buttonCalculateHandler() {
+        let sum = 0;
+
+        for(let i = 0; i < this.taxesList.length; i++) {
+            if(this.taxesList[i].income) {
+                sum += +this.taxesList[i].income;
+            }
+        }
+
+        let totalElement = document.querySelector('.calculate__total');
+        totalElement.textContent = sum;
+
+    }
+    
+    createTax(id) {
+        let tax = {};
+        tax.id = id;
+        tax.date = undefined;
+        tax.income = undefined;
+        tax.currency = undefined;
+        
+        return tax;
+    }
+    
+    
+
+    focusOutHandler(element) {
+        const currentElement = event.target;
+        const taxElement = currentElement.parentNode.parentNode;
+
+        let id = taxElement.id;
+
+        let tax = this.filterTaxes(id);
+
+        if(tax) {
+
+            if (currentElement.classList.contains("tax__date")) {
+                tax.date = currentElement.value;
+            } else if (currentElement.classList.contains("tax__income")) {
+                tax.income = currentElement.value;
+            } else if (currentElement.classList.contains("tax__currency")) {
+                tax.currency = currentElement.value;
+            }
+        }
+
+       // console.log(tax);
+    }
+
+    filterTaxes(id) {
+        let tax = null;
+
+        for(let i = 0; i < this.taxesList.length; i++) {
+            if(this.taxesList[i].id === id) {
+                tax = this.taxesList[i];
+                break;
+            }
+        }
+
+        return tax;
+    }
+
     setHandlerAddTask() {
-        this.addTax = document.querySelector(".tax__button--ok");
+        this.addTax = document.querySelector('.button--add');
 
         this.addTaxHtml = this.addTaxHtml.bind(this);
         this.addTax.addEventListener('click', this.addTaxHtml);
@@ -20,12 +96,11 @@ class TaxCalculation {
         const taxesItemsElement = document.querySelector('.taxes__items');
         taxesItemsElement.appendChild(taxElement);
 
-        this.addTax.removeEventListener('click', this.addTaxHtml);
-        this.addTax.parentNode.removeChild(this.addTax);
-        this.setHandlerAddTask();
+        this.setScrollBottom();
 
 
-
+        let tax = this.createTax(taxElement.id);
+        this.taxesList.push(tax);
     }
 
     createTaxElement() {
@@ -40,15 +115,13 @@ class TaxCalculation {
         taxDataElement.appendChild(incomeElement);
         taxDataElement.appendChild(currencyElement);
 
-        const buttonElement = document.createElement('button');
-        buttonElement.classList.add('tax__button--ok');
-        buttonElement.innerHTML = "Добавить";
-
         const taxElement = document.createElement('div');
         taxElement.classList.add('tax');
 
         taxElement.appendChild(taxDataElement);
-        taxElement.appendChild(buttonElement);
+
+        this.id ++;
+        taxElement.id = this.id;
 
         return taxElement;
     }
@@ -66,6 +139,7 @@ class TaxCalculation {
         const incomeElement = document.createElement('input');
         incomeElement.classList.add('tax__item', 'tax__income');
         incomeElement.type = "number";
+
         incomeElement.placeholder = "20000,00";
 
         return incomeElement;
@@ -98,6 +172,12 @@ class TaxCalculation {
         currencyElement.appendChild(optionBYN);
 
         return currencyElement;
+    }
+
+
+    setScrollBottom() {
+        const taxesElement = document.querySelector('.taxes');
+        taxesElement.scrollTop = taxesElement.scrollHeight;
     }
 }
 

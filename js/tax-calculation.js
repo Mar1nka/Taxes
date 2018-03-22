@@ -1,4 +1,3 @@
-
 class TaxCalculation {
     constructor() {
 
@@ -26,29 +25,16 @@ class TaxCalculation {
     }
 
     formatInputIncome(event) {
-        let value = event.target.value;
-
-        let reg = /^\d+([\.,]{0,1})\d{0,2}$/;
-        let isCorrect = reg.test(value);
-
-        if(isCorrect) {
-            event.target.value = value;
-        } else {
-            // for(let symbol of value) {
-            //     if(reg.test(symbol)) {
-            //
-            //     }
-            // }
-
-            event.target.value = value.substring(0, value.length - 1);
-        }
+        event.target.value = event.target.value.replace(/[^\d,.]*/g, '')
+            .replace(/([,.])[,.]+/g, '$1')
+            .replace(/^[^\d]*(\d+([.,]\d{0,2})?).*$/g, '$1');
     }
 
     buttonCalculateHandler() {
         let sum = 0;
 
-        for(let i = 0; i < this.taxesList.length; i++) {
-            if(this.taxesList[i].income) {
+        for (let i = 0; i < this.taxesList.length; i++) {
+            if (this.taxesList[i].income) {
                 sum += +this.taxesList[i].income;
             }
         }
@@ -57,18 +43,17 @@ class TaxCalculation {
         totalElement.textContent = sum;
 
     }
-    
+
     createTax(id) {
         let tax = {};
         tax.id = id;
         tax.date = undefined;
         tax.income = undefined;
         tax.currency = undefined;
-        
+
         return tax;
     }
-    
-    
+
 
     focusOutHandler(element) {
         const currentElement = event.target;
@@ -78,7 +63,7 @@ class TaxCalculation {
 
         let tax = this.filterTaxes(id);
 
-        if(tax) {
+        if (tax) {
 
             if (currentElement.classList.contains("tax__date")) {
                 tax.date = currentElement.value;
@@ -93,8 +78,8 @@ class TaxCalculation {
     filterTaxes(id) {
         let tax = null;
 
-        for(let i = 0; i < this.taxesList.length; i++) {
-            if(this.taxesList[i].id === id) {
+        for (let i = 0; i < this.taxesList.length; i++) {
+            if (this.taxesList[i].id === id) {
                 tax = this.taxesList[i];
                 break;
             }
@@ -141,7 +126,7 @@ class TaxCalculation {
 
         taxElement.appendChild(taxDataElement);
 
-        this.id ++;
+        this.id++;
         taxElement.id = this.id;
 
         return taxElement;

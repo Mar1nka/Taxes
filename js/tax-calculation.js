@@ -17,8 +17,31 @@ class TaxCalculation {
         let buttonCalculate = document.querySelector('.button--calculate');
         this.buttonCalculateHandler = this.buttonCalculateHandler.bind(this);
         buttonCalculate.addEventListener('click', this.buttonCalculateHandler);
-        
 
+
+        var inputIncomeElement = document.querySelector('.tax__income');
+        this.formatInputIncome = this.formatInputIncome.bind(this);
+        inputIncomeElement.addEventListener("input", this.formatInputIncome);
+
+    }
+
+    formatInputIncome(event) {
+        let value = event.target.value;
+
+        let reg = /^\d+([\.,]{0,1})\d{0,2}$/;
+        let isCorrect = reg.test(value);
+
+        if(isCorrect) {
+            event.target.value = value;
+        } else {
+            // for(let symbol of value) {
+            //     if(reg.test(symbol)) {
+            //
+            //     }
+            // }
+
+            event.target.value = value.substring(0, value.length - 1);
+        }
     }
 
     buttonCalculateHandler() {
@@ -65,8 +88,6 @@ class TaxCalculation {
                 tax.currency = currentElement.value;
             }
         }
-
-       // console.log(tax);
     }
 
     filterTaxes(id) {
@@ -138,7 +159,7 @@ class TaxCalculation {
     createIncomeElement() {
         const incomeElement = document.createElement('input');
         incomeElement.classList.add('tax__item', 'tax__income');
-        incomeElement.type = "number";
+        incomeElement.type = "text";
 
         incomeElement.placeholder = "20000,00";
 

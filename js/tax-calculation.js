@@ -1,7 +1,8 @@
+import TaxData from "./tax-data.js";
+
 class TaxCalculation {
     constructor() {
 
-        this.id = 0;
         this.taxesList = [];
 
         this.setHandlerAddTask();
@@ -97,7 +98,10 @@ class TaxCalculation {
     }
 
     addTaxHtml() {
-        const taxElement = this.createTaxElement();
+        let tax = new TaxData();
+        this.taxesList.push(tax);
+
+        const taxElement = this.createTaxElement(tax.id);
 
         const taxesItemsElement = document.querySelector('.taxes__items');
         taxesItemsElement.appendChild(taxElement);
@@ -105,11 +109,10 @@ class TaxCalculation {
         this.setScrollBottom();
 
 
-        let tax = this.createTax(taxElement.id);
-        this.taxesList.push(tax);
+
     }
 
-    createTaxElement() {
+    createTaxElement(id) {
         const dateElement = this.createDateElement();
         const incomeElement = this.createIncomeElement();
         const currencyElement = this.createCurrencyElement();
@@ -126,8 +129,7 @@ class TaxCalculation {
 
         taxElement.appendChild(taxDataElement);
 
-        this.id++;
-        taxElement.id = this.id;
+        taxElement.id = id;
 
         return taxElement;
     }

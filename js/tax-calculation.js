@@ -1,4 +1,4 @@
-import TaxData from "./tax-data.js";
+//import TaxData from "./tax-data.js";
 
 class TaxCalculation {
     constructor() {
@@ -11,6 +11,13 @@ class TaxCalculation {
         this.focusOutHandler = this.focusOutHandler.bind(this);
         taxesItemsElement.addEventListener('focusout', this.focusOutHandler);
 
+        this.formatInputIncome = this.formatInputIncome.bind(this);
+        taxesItemsElement.addEventListener("input", this.formatInputIncome);
+
+        this.clickRemoveHandler = this.clickRemoveHandler.bind(this);
+        taxesItemsElement.addEventListener("click", this.clickRemoveHandler);
+
+
         this.addTaxHtml();
 
 
@@ -18,17 +25,46 @@ class TaxCalculation {
         this.buttonCalculateHandler = this.buttonCalculateHandler.bind(this);
         buttonCalculate.addEventListener('click', this.buttonCalculateHandler);
 
-
-        var inputIncomeElement = document.querySelector('.tax__income');
-        this.formatInputIncome = this.formatInputIncome.bind(this);
-        inputIncomeElement.addEventListener("input", this.formatInputIncome);
-
     }
 
+    clickRemoveHandler(event) {
+        const currentElement = event.target;
+
+        if(currentElement.classList.contains("tax__btn-remove")) {
+            const id = +currentElement.parentNode.id;
+            this.removeTax(id);
+            this.removeTaxElement(currentElement.parentNode);
+        }
+    }
+
+    removeTax(id) {
+        let index = null;
+
+        for (let i = 0; i < this.taxesList.length; i++) {
+            if (this.taxesList[i].id === id) {
+                index = i;
+                break;
+            }
+        }
+
+        if(index) {
+            this.taxesList.splice(index, 1);
+        }
+    }
+
+    removeTaxElement(element) {
+        element.parentNode.removeChild(element);
+    }
+
+
     formatInputIncome(event) {
-        event.target.value = event.target.value.replace(/[^\d,.]*/g, '')
-            .replace(/([,.])[,.]+/g, '$1')
-            .replace(/^[^\d]*(\d+([.,]\d{0,2})?).*$/g, '$1');
+        const currentElement = event.target;
+
+        if(currentElement.classList.contains("tax__income")) {
+            currentElement.value = currentElement.value.replace(/[^\d,.]*/g, '')
+                .replace(/([,.])[,.]+/g, '$1')
+                .replace(/^[^\d]*(\d+([.,]\d{0,2})?).*$/g, '$1');
+        }
     }
 
     buttonCalculateHandler() {
@@ -45,27 +81,17 @@ class TaxCalculation {
 
     }
 
-    createTax(id) {
-        let tax = {};
-        tax.id = id;
-        tax.date = undefined;
-        tax.income = undefined;
-        tax.currency = undefined;
-
-        return tax;
-    }
 
 
     focusOutHandler(element) {
         const currentElement = event.target;
         const taxElement = currentElement.parentNode.parentNode;
 
-        let id = taxElement.id;
+        let id = +taxElement.id;
 
         let tax = this.filterTaxes(id);
 
         if (tax) {
-
             if (currentElement.classList.contains("tax__date")) {
                 tax.date = currentElement.value;
             } else if (currentElement.classList.contains("tax__income")) {
@@ -108,14 +134,13 @@ class TaxCalculation {
 
         this.setScrollBottom();
 
-
-
     }
 
     createTaxElement(id) {
         const dateElement = this.createDateElement();
         const incomeElement = this.createIncomeElement();
         const currencyElement = this.createCurrencyElement();
+        const btnRemoveElement = this.createBtnRemoveElement();
 
         const taxDataElement = document.createElement('div');
         taxDataElement.classList.add('tax__data');
@@ -123,11 +148,13 @@ class TaxCalculation {
         taxDataElement.appendChild(dateElement);
         taxDataElement.appendChild(incomeElement);
         taxDataElement.appendChild(currencyElement);
+        taxDataElement.appendChild(btnRemoveElement);
 
         const taxElement = document.createElement('div');
         taxElement.classList.add('tax');
 
         taxElement.appendChild(taxDataElement);
+        taxElement.appendChild(btnRemoveElement);
 
         taxElement.id = id;
 
@@ -138,6 +165,7 @@ class TaxCalculation {
         const dateElement = document.createElement('input');
         dateElement.classList.add('tax__item', 'tax__date');
         dateElement.type = "date";
+        dateElement.setAttribute("required", "true");
 
 
         return dateElement;
@@ -147,6 +175,7 @@ class TaxCalculation {
         const incomeElement = document.createElement('input');
         incomeElement.classList.add('tax__item', 'tax__income');
         incomeElement.type = "text";
+        incomeElement.setAttribute("required", "true");
 
         incomeElement.placeholder = "20000,00";
 
@@ -157,6 +186,7 @@ class TaxCalculation {
         const currencyElement = document.createElement('select');
         currencyElement.classList.add('tax__item', 'tax__currency');
         currencyElement.name = "currency";
+        currencyElement.setAttribute("required", "true");
 
         let optionUSD = document.createElement('option');
         optionUSD.value = "usd";
@@ -180,6 +210,14 @@ class TaxCalculation {
         currencyElement.appendChild(optionBYN);
 
         return currencyElement;
+    }
+
+    createBtnRemoveElement() {
+        const btnRemoveElement = document.createElement('button');
+        btnRemoveElement.classList.add('tax__btn-remove');
+        btnRemoveElement.textContent = "X";
+
+        return btnRemoveElement;
     }
 
 

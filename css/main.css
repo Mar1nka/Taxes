@@ -33,7 +33,7 @@ body {
 .menu {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
 
     margin-bottom: 20px;
@@ -57,7 +57,7 @@ body {
 .taxes__title {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
 
     align-items: stretch;
 }
@@ -105,13 +105,14 @@ body {
 
 .tax {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    border-bottom: 1px solid grey;
 
     min-width: 100%;
 }
+
+
 
 /*.tax:hover {*/
    /*//background: #95c9e7;*/
@@ -122,6 +123,8 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: stretch;
+
+    border-bottom: 1px solid grey;
 }
 
 .tax__item {
@@ -131,6 +134,27 @@ body {
 
     min-height: 40px;
     margin: 2px;
+}
+
+
+.tax__btn-remove {
+    margin: 0 10px;
+    padding: 5px;
+    background: none;
+    color: black;
+
+    visibility: hidden;
+}
+
+.tax__btn-remove:hover {
+    transition: color 0.3s;
+    cursor: pointer;
+    color: gray;
+}
+
+.tax:hover .tax__btn-remove {
+    transition: visibility 0.3s;
+    visibility: visible;
 }
 
 

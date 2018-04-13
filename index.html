@@ -9,7 +9,7 @@
 <body>
 
 
-<main class="taxes">
+<form class="taxes">
 
     <div class="taxes__menu menu">
         <div class="menu__name">Налоги</div>
@@ -38,8 +38,10 @@
                     <!--<option value="rub">RUB</option>-->
                     <!--<option value="byn">BYN</option>-->
                 <!--</select>-->
-
             <!--</div>-->
+
+             <!--<button class="tax__btn-remove">X</button>-->
+
         <!--</div>-->
 
     </div>
@@ -48,14 +50,14 @@
 
     <div class="calculate">
         <div class="calculate__total"></div>
-        <button class="button--calculate">Вычислить</button>
+        <button class="button--calculate" type="submit">Вычислить</button>
 
     </div>
 
-</main>
+</form>
 
-<script type="module" src="js/tax-data.js"></script>
-<script type="module" src="js/tax-calculation.js"></script>
+<script src="js/tax-data.js" type="module"></script>
+<script src="js/tax-calculation.js" type="module"></script>
 
 </body>
 </html>

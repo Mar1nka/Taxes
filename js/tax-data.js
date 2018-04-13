@@ -1,6 +1,7 @@
 let taxId = 0;
 
-export default class TaxData {
+//export  default
+class TaxData {
     constructor() {
         this.date = null;
         this.income = null;
@@ -9,3 +10,4 @@ export default class TaxData {
     }
 }
 
+window.TaxData = TaxData;

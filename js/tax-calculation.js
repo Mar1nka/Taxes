@@ -2,8 +2,12 @@
 
 class TaxCalculation {
     constructor() {
+        this.taxAmount = 0;
+        this.counterAnswer = 0;
+        this.curentTaxData = null;
 
         this.taxesList = [];
+        this.stackTaxesList = [];
 
         this.setHandlerAddTask();
 
@@ -25,6 +29,32 @@ class TaxCalculation {
         this.buttonCalculateHandler = this.buttonCalculateHandler.bind(this);
         buttonCalculate.addEventListener('click', this.buttonCalculateHandler);
 
+
+        this.finishRequest = this.finishRequest.bind(this);
+        EventObserver.addEventListener('finishRequest', this.finishRequest);
+
+    }
+
+    finishRequest() {
+        this.taxAmount += +this.curentTaxData.tax;
+
+        if(this.stackTaxesList.length) {
+            this.sendRequest();
+        } else {
+            let totalElement = document.querySelector('.calculate__total');
+            totalElement.textContent = this.taxAmount;
+        }
+    }
+
+    buttonCalculateHandler() {
+        this.stackTaxesList = this.taxesList.slice(0);
+        this.sendRequest();
+
+    }
+
+    sendRequest() {
+        this.curentTaxData = this.stackTaxesList.pop();
+        this.curentTaxData.request();
     }
 
     clickRemoveHandler(event) {
@@ -67,19 +97,7 @@ class TaxCalculation {
         }
     }
 
-    buttonCalculateHandler() {
-        let sum = 0;
 
-        for (let i = 0; i < this.taxesList.length; i++) {
-            if (this.taxesList[i].income) {
-                sum += +this.taxesList[i].income;
-            }
-        }
-
-        let totalElement = document.querySelector('.calculate__total');
-        totalElement.textContent = sum;
-
-    }
 
 
 
@@ -95,9 +113,10 @@ class TaxCalculation {
             if (currentElement.classList.contains("tax__date")) {
                 tax.date = currentElement.value;
             } else if (currentElement.classList.contains("tax__income")) {
-                tax.income = currentElement.value;
+                tax.income = +currentElement.value;
             } else if (currentElement.classList.contains("tax__currency")) {
                 tax.currency = currentElement.value;
+                console.log(tax.currency);
             }
         }
     }
@@ -189,25 +208,25 @@ class TaxCalculation {
         currencyElement.setAttribute("required", "true");
 
         let optionUSD = document.createElement('option');
-        optionUSD.value = "usd";
+        optionUSD.value = "USD";
         optionUSD.innerHTML = "USD";
 
         let optionEUR = document.createElement('option');
-        optionEUR.value = "eur";
+        optionEUR.value = "EUR";
         optionEUR.innerHTML = "EUR";
 
         let optionRUB = document.createElement('option');
-        optionRUB.value = "rub";
+        optionRUB.value = "RUB";
         optionRUB.innerHTML = "RUB";
 
-        let optionBYN = document.createElement('option');
-        optionBYN.value = "byn";
-        optionBYN.innerHTML = "BYN";
+        // let optionBYN = document.createElement('option');
+        // optionBYN.value = "BYN";
+        // optionBYN.innerHTML = "BYN";
 
         currencyElement.appendChild(optionUSD);
         currencyElement.appendChild(optionEUR);
         currencyElement.appendChild(optionRUB);
-        currencyElement.appendChild(optionBYN);
+        // currencyElement.appendChild(optionBYN);
 
         return currencyElement;
     }

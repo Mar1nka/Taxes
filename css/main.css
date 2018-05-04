@@ -103,6 +103,8 @@ body {
 }
 
 
+
+
 .tax {
     display: flex;
     flex-direction: row;
@@ -126,6 +128,8 @@ body {
 
     border-bottom: 1px solid grey;
 }
+
+
 
 .tax__item {
     padding: 5px 10px;

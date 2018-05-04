@@ -12,6 +12,8 @@
             this.currency = 'USD';
             this.id = ++taxId;
 
+            this.percent = 13;
+
             this.tax = 0;
         }
 
@@ -31,9 +33,9 @@
                     let reply = JSON.parse(xhr.responseText);
 
                     allSum = (this2.income * reply.Cur_OfficialRate / reply.Cur_Scale).toFixed(2);
-                    this2.tax= (allSum / 100 * 13).toFixed(2);
+                    this2.tax= (allSum / 100 * this2.percent).toFixed(2);
 
-                    EventObserver.triggerEvent('finishRequest');
+                    EventObserver.triggerEvent('finishRequest', [this2.tax]);
                 }
             }
 

@@ -1,11 +1,9 @@
 //import TaxData from "./tax-data.js";
 
+const CurrencyService = window.CurrencyService;
+
 class TaxCalculation {
     constructor() {
-        this.taxAmount = 0;
-
-        this.counter = 0;
-
         this.taxesList = [];
 
         this.setHandlerAddTask();
@@ -20,45 +18,53 @@ class TaxCalculation {
         this.clickRemoveHandler = this.clickRemoveHandler.bind(this);
         taxesItemsElement.addEventListener("click", this.clickRemoveHandler);
 
-
         this.addTaxHtml();
-
 
         let buttonCalculate = document.querySelector('.button--calculate');
         this.buttonCalculateHandler = this.buttonCalculateHandler.bind(this);
         buttonCalculate.addEventListener('click', this.buttonCalculateHandler);
-
-
-        this.finishRequest = this.finishRequest.bind(this);
-        EventObserver.addEventListener('finishRequest', this.finishRequest);
-
     }
 
-    finishRequest(...arg) {
-        this.counter--;
-        this.taxAmount += +arg[0];
-
-        if(this.counter === 0) {
-            let totalElement = document.querySelector('.calculate__total');
-            totalElement.textContent = this.taxAmount;
-        }
-    }
 
     buttonCalculateHandler() {
-        this.counter = 0;
-        this.taxAmount = 0;
+        let requestCounter = 0;
+        let taxAmount = 0;
 
-        for(let i = 0; i < this.taxesList.length; i++) {
-            this.counter++;
-            this.taxesList[i].request();
+        for (let i = 0, taxesListLength = this.taxesList.length; i < taxesListLength; i++) {
+            CurrencyService.getCurrency(this.taxesList[i].currency, this.taxesList[i].date)
+                .then((response) => {
+                    requestCounter++;
+
+                    const reply = JSON.parse(response);
+                    const allSum = (this.taxesList[i].income * reply.Cur_OfficialRate / reply.Cur_Scale).toFixed(2);
+                    const tax = (allSum / 100 * this.taxesList[i].percent);
+
+                    taxAmount = taxAmount + tax;
+
+                    if (requestCounter === taxesListLength) {
+                        let totalElement = document.querySelector('.calculate__total');
+                        totalElement.textContent = taxAmount.toFixed(2);
+                    }
+                });
         }
+
+        // Promise.all(promises).then((responses) => {
+        //     responses.forEach((response) => {
+        //         let reply = JSON.parse(response);
+        //         let allSum = (this.income * reply.Cur_OfficialRate / reply.Cur_Scale).toFixed(2);
+        //         let tax = (allSum / 100 * this.percent).toFixed(2);
+        //
+        //         taxAmount = taxAmount + tax;
+        //     })
+        // });
+
     }
 
 
     clickRemoveHandler(event) {
         const currentElement = event.target;
 
-        if(currentElement.classList.contains("tax__btn-remove")) {
+        if (currentElement.classList.contains("tax__btn-remove")) {
             const id = +currentElement.parentNode.id;
             this.removeTax(id);
             this.removeTaxElement(currentElement.parentNode);
@@ -75,7 +81,7 @@ class TaxCalculation {
             }
         }
 
-        if(index) {
+        if (index) {
             this.taxesList.splice(index, 1);
         }
     }
@@ -90,13 +96,12 @@ class TaxCalculation {
 
         const currentElement = event.target;
 
-        if(currentElement.classList.contains("tax__income")) {
+        if (currentElement.classList.contains("tax__income")) {
             currentElement.value = currentElement.value.replace(/[^\d,.]*/g, '')
                 .replace(/([,.])[,.]+/g, '$1')
                 .replace(/^[^\d]*(\d+([.,]\d{0,2})?).*$/g, '$1');
         }
     }
-
 
 
     focusOutHandler(element) {
@@ -187,7 +192,6 @@ class TaxCalculation {
         dateElement.setAttribute("required", "true");
         dateElement.setAttribute("max", new Date());
         dateElement.valueAsDate = new Date();
-
 
 
         return dateElement;

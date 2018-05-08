@@ -6,6 +6,8 @@ class TaxCalculation {
     constructor() {
         this.taxesList = [];
 
+        this.percent = 13;
+
         this.setHandlerAddTask();
 
         let taxesItemsElement = document.querySelector('.taxes__items');
@@ -28,36 +30,25 @@ class TaxCalculation {
 
     buttonCalculateHandler() {
         let requestCounter = 0;
-        let taxAmount = 0;
+        let allSum = 0;
+        let taxesListLength = this.taxesList.length;
 
-        for (let i = 0, taxesListLength = this.taxesList.length; i < taxesListLength; i++) {
+        for (let i = 0; i < taxesListLength; i++) {
             CurrencyService.getCurrency(this.taxesList[i].currency, this.taxesList[i].date)
                 .then((response) => {
                     requestCounter++;
 
                     const reply = JSON.parse(response);
-                    const allSum = (this.taxesList[i].income * reply.Cur_OfficialRate / reply.Cur_Scale).toFixed(2);
-                    const tax = (allSum / 100 * this.taxesList[i].percent);
-
-                    taxAmount = taxAmount + tax;
+                    const sum = +(this.taxesList[i].income * reply.Cur_OfficialRate / reply.Cur_Scale).toFixed(2);
+                    allSum = allSum + sum;
 
                     if (requestCounter === taxesListLength) {
+                        const taxAmount = (allSum / 100 * this.percent);
                         let totalElement = document.querySelector('.calculate__total');
                         totalElement.textContent = taxAmount.toFixed(2);
                     }
                 });
         }
-
-        // Promise.all(promises).then((responses) => {
-        //     responses.forEach((response) => {
-        //         let reply = JSON.parse(response);
-        //         let allSum = (this.income * reply.Cur_OfficialRate / reply.Cur_Scale).toFixed(2);
-        //         let tax = (allSum / 100 * this.percent).toFixed(2);
-        //
-        //         taxAmount = taxAmount + tax;
-        //     })
-        // });
-
     }
 
 

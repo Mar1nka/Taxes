@@ -9,12 +9,7 @@
             this.income = null;
             this.currency = 'USD';
             this.id = ++taxId;
-
-            this.percent = 13;
-
-            this.tax = 0;
         }
-
     }
 
     window.TaxData = TaxData;

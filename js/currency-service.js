@@ -15,7 +15,6 @@
                     xhr.onreadystatechange = function () {
                         if (this.readyState === 4) {
                             if (this.status >= 200 && this.status <= 300) {
-                                //console.log(this.responseText);
                                 resolve(this.responseText);
                             } else {
                                 let error = new Error(this.statusText);

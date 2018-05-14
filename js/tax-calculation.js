@@ -1,12 +1,12 @@
 //import TaxData from "./tax-data.js";
 
 const CurrencyService = window.CurrencyService;
+const TaxRate = 13;
 
 class TaxCalculation {
     constructor() {
         this.taxesList = [];
 
-        this.percent = 13;
 
         this.setHandlerAddTask();
 
@@ -22,13 +22,22 @@ class TaxCalculation {
 
         this.addTaxHtml();
 
-        let buttonCalculate = document.querySelector('.button--calculate');
-        this.buttonCalculateHandler = this.buttonCalculateHandler.bind(this);
-        buttonCalculate.addEventListener('click', this.buttonCalculateHandler);
+        // let buttonCalculate = document.querySelector('.button--calculate');
+        // this.buttonCalculateHandler = this.buttonCalculateHandler.bind(this);
+        // buttonCalculate.addEventListener('click', this.buttonCalculateHandler);
+
+        const taxesForm = document.querySelector('.taxes');
+        this.submitHandler = this.submitHandler.bind(this);
+        taxesForm.addEventListener('submit', this.submitHandler);
+    }
+
+    submitHandler(event) {
+        event.preventDefault();
+        this.calculateTaxes();
     }
 
 
-    buttonCalculateHandler() {
+    calculateTaxes() {
         let requestCounter = 0;
         let allSum = 0;
         let taxesListLength = this.taxesList.length;
@@ -43,7 +52,7 @@ class TaxCalculation {
                     allSum = allSum + sum;
 
                     if (requestCounter === taxesListLength) {
-                        const taxAmount = (allSum / 100 * this.percent);
+                        const taxAmount = (allSum / 100 * TaxRate);
                         let totalElement = document.querySelector('.calculate__total');
                         totalElement.textContent = taxAmount.toFixed(2);
                     }

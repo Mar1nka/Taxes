@@ -1,5 +1,21 @@
 //import TaxData from "./tax-data.js";
 
+
+const Currencies = [
+    {text: "USD", textCode: "USD"},
+    {text: "EUR", textCode: "EUR"},
+    {text: "RUB", textCode: "RUB"}
+    ];
+
+
+let optionRUB = document.createElement('option');
+optionRUB.value = "RUB";
+optionRUB.innerHTML = "RUB";
+
+let optionUSD = document.createElement('option');
+optionUSD.value = "USD";
+optionUSD.innerHTML = "USD";
+
 const CurrencyService = window.CurrencyService;
 const TaxRate = 13;
 
@@ -213,28 +229,20 @@ class TaxCalculation {
         currencyElement.name = "currency";
         currencyElement.setAttribute("required", "true");
 
-        let optionUSD = document.createElement('option');
-        optionUSD.value = "USD";
-        optionUSD.innerHTML = "USD";
-
-        let optionEUR = document.createElement('option');
-        optionEUR.value = "EUR";
-        optionEUR.innerHTML = "EUR";
-
-        let optionRUB = document.createElement('option');
-        optionRUB.value = "RUB";
-        optionRUB.innerHTML = "RUB";
-
-        // let optionBYN = document.createElement('option');
-        // optionBYN.value = "BYN";
-        // optionBYN.innerHTML = "BYN";
-
-        currencyElement.appendChild(optionUSD);
-        currencyElement.appendChild(optionEUR);
-        currencyElement.appendChild(optionRUB);
-        // currencyElement.appendChild(optionBYN);
+        for(let i = 0; i < Currencies.length; i++) {
+            let option = this.createOptionCurrency(Currencies[i].text, Currencies[i].textCode);
+            currencyElement.appendChild(option);
+        }
 
         return currencyElement;
+    }
+
+    createOptionCurrency(text, textCode) {
+        let option = document.createElement('option');
+        option.value = textCode;
+        option.innerHTML = text;
+
+        return option;
     }
 
     createBtnRemoveElement() {

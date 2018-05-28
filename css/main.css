@@ -27,7 +27,14 @@ body {
     padding: 10px 20px;
 
     max-height: 600px;
-    overflow: auto;
+    min-height: 600px;
+    height: 600px;
+    /*overflow: auto;*/
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .menu {
@@ -60,6 +67,8 @@ body {
     justify-content: flex-start;
 
     align-items: stretch;
+
+    margin-bottom: 20px;
 }
 
 .title__item {
@@ -99,6 +108,8 @@ body {
     align-items: center;
 
     min-width: 100%;
+    max-height: 340px;
+    overflow: auto;
 
 }
 
@@ -112,6 +123,12 @@ body {
     align-items: center;
 
     min-width: 100%;
+    min-height: 45px;
+}
+
+.tax:hover {
+    background: #aed1ff;
+    /*transition: background 0.3s;*/
 }
 
 
@@ -187,12 +204,18 @@ body {
     justify-content: flex-end;
     align-items: center;
 
+    align-self: flex-end;
+
+
+
     padding: 5px 0;
-    margin-top: 40px;
+    margin-top: 15px;
+
+
 }
 
 .button--calculate {
-    background: #9fc6ff;
+    background: #d7eaff;
     border: 1px solid cornflowerblue;
     border-radius: 5px;
     color: black;
@@ -203,8 +226,8 @@ body {
 
 .button--calculate:hover {
     cursor: pointer;
-    color: white;
-    transition: color 0.3s;
+    background: #a5d1ff;
+    transition: background 0.3s;
 }
 
 .calculate__total {

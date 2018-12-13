@@ -1,68 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Taxes</title>
+  <meta charset="UTF-8">
+  <title>Taxes</title>
 
-    <link href="css\main.css" rel="stylesheet">
+  <link href="css\main.css" rel="stylesheet">
+  <link href="node_modules/js-datepicker/dist/datepicker.min.css" rel="stylesheet" type="text/css">
+
 </head>
 <body>
 
 
 <form class="taxes">
 
-    <div class="taxes__basic">
+  <div class="taxes__basic">
 
     <div class="taxes__menu menu">
-        <div class="menu__name">Налоги</div>
+      <div class="menu__name">Налоги</div>
     </div>
 
 
     <div class="taxes__title title">
-        <!--<div class="title__item title__number">№ п/п</div>-->
-        <div class="title__item title__data">Дата получения дохода</div>
-        <div class="title__item title__income">Размер дахода</div>
-        <div class="title__item title__currency">Наименование денежной единицы</div>
+      <!--<div class="title__item title__number">№ п/п</div>-->
+      <div class="title__item title__data">Дата получения дохода</div>
+      <div class="title__item title__income">Размер дахода</div>
+      <div class="title__item title__currency">Наименование денежной единицы</div>
     </div>
 
     <div class="taxes__items">
 
-        <!--<div class="tax">-->
-            <!--<div class="tax__data">-->
+      <!--<div class="tax">-->
+      <!--<div class="tax__data">-->
 
-                <!--<input class="tax__item tax__date " type="date">-->
+      <!--<input class="tax__item tax__date " type="date">-->
 
-                <!--<input class="tax__item tax__income " type=number placeholder="20000,00">-->
+      <!--<input class="tax__item tax__income " type=number placeholder="20000,00">-->
 
-                <!--<select class="tax__item tax__currency " name="currency">-->
-                    <!--<option value="usd">USD</option>-->
-                    <!--<option value="eur">EUR</option>-->
-                    <!--<option value="rub">RUB</option>-->
-                    <!--<option value="byn">BYN</option>-->
-                <!--</select>-->
-            <!--</div>-->
+      <!--<select class="tax__item tax__currency " name="currency">-->
+      <!--<option value="usd">USD</option>-->
+      <!--<option value="eur">EUR</option>-->
+      <!--<option value="rub">RUB</option>-->
+      <!--<option value="byn">BYN</option>-->
+      <!--</select>-->
+      <!--</div>-->
 
-             <!--<button class="tax__btn-remove">X</button>-->
+      <!--<button class="tax__btn-remove">X</button>-->
 
-        <!--</div>-->
+      <!--</div>-->
 
     </div>
 
     <button class="button--add" type="button">+</button>
 
-    </div>
+  </div>
 
-    <div class="calculate">
-        <div class="calculate__total"></div>
-        <button class="button--calculate">Вычислить</button>
+  <div class="calculate">
+    <div class="calculate__total"></div>
+    <button class="button--calculate">Вычислить</button>
 
-    </div>
+  </div>
 
 </form>
 
+<script src="node_modules/js-datepicker/dist/datepicker.min.js"></script>
 <script src="js/currency-service.js"></script>
 <script src="js/tax-data.js"></script>
 <script src="js/tax-calculation.js"></script>
-<!--type="module"-->
+
 </body>
 </html>

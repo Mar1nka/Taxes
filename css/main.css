@@ -101,6 +101,22 @@ body {
   min-width: 150px;
 }
 
+/**/
+.title__course, .tax__course {
+  max-width: 150px;
+  min-width: 150px;
+}
+
+.title__sum, .tax__sum {
+  max-width: 150px;
+  min-width: 150px;
+}
+
+.title__tax, .tax__tax {
+  max-width: 150px;
+  min-width: 150px;
+}
+
 
 .taxes__items {
   display: flex;
@@ -126,15 +142,10 @@ body {
   min-height: 45px;
 }
 
-.tax:hover {
-  /*border-bottom: 2px solid #a5d1ff;*/
-  /*transition: background 0.3s;*/
+.tax:hover .tax__data  {
+  border-bottom: 1px solid #a5d1ff;
+  transition:  border-bottom 0.3s;
 }
-
-
-/*.tax:hover {*/
-/*//background: #95c9e7;*/
-/*}*/
 
 .tax__data {
   display: flex;
@@ -184,13 +195,14 @@ body {
   background: #8ec78e;
   color: black;
   border-radius: 5px;
+  outline: none;
 }
 
 
 .button--add:hover {
   cursor: pointer;
-  transition: color 0.3s;
-  color: white;
+  background: #7eb67e;
+  transition: background 0.3s;
 }
 
 
@@ -210,18 +222,17 @@ body {
 }
 
 .button--calculate {
-  background: #d7eaff;
-  border: 1px solid cornflowerblue;
+  background: #a5d1ff;
   border-radius: 5px;
   color: black;
   outline: none;
 
-  padding: 5px;
+  padding: 10px;
 }
 
 .button--calculate:hover {
   cursor: pointer;
-  background: #a5d1ff;
+  background: #98c1ee;
   transition: background 0.3s;
 }
 

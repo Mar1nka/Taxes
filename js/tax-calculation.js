@@ -54,6 +54,7 @@ class TaxCalculation {
 
 
   calculateTaxes() {
+
     let requestCounter = 0;
     let allSum = 0;
     let taxesListLength = this.taxesList.length;
@@ -66,6 +67,25 @@ class TaxCalculation {
           const reply = JSON.parse(response);
           const sum = +(this.taxesList[i].income * reply.Cur_OfficialRate / reply.Cur_Scale).toFixed(2);
           allSum = allSum + sum;
+
+          const id = this.taxesList[i].id;
+
+          const courseElement = document.querySelector(`#tax_${id} .tax__data .tax__course`);
+          courseElement.value = `${reply.Cur_OfficialRate} / ${reply.Cur_Scale}`;
+
+          const sumElement = document.querySelector(`#tax_${id} .tax__data .tax__sum`);
+          sumElement.value = sum.toFixed(2);
+
+          const taxItemElement = document.querySelector(`#tax_${id} .tax__data .tax__tax`);
+          const tax = sum / 100 * TaxRate;
+          taxItemElement.value = tax.toFixed(2);
+
+          // const taxDataElement = document.getElementById(id);
+          // const children = taxDataElement.children;
+          //
+          // console.log(children);
+
+          // const sumElement =
 
           if (requestCounter === taxesListLength) {
             const taxAmount = (allSum / 100 * TaxRate);
@@ -81,10 +101,18 @@ class TaxCalculation {
     const currentElement = event.target;
 
     if (currentElement.classList.contains("tax__btn-remove")) {
-      const id = +currentElement.parentNode.id;
+      const id = +currentElement.parentNode.id.split('tax_')[1];
       this.removeTax(id);
       this.removeTaxElement(currentElement.parentNode);
+
+      let totalElement = document.querySelector('.calculate__total');
+      totalElement.textContent = '';
+
+      if(!this.taxesList.length) {
+        this.addTaxHtml();
+      }
     }
+
   }
 
   removeTax(id) {
@@ -97,13 +125,12 @@ class TaxCalculation {
       }
     }
 
-    if (index) {
+    if (!isNaN(index)) {
       this.taxesList.splice(index, 1);
     }
   }
 
   removeTaxElement(element) {
-
     element.parentNode.removeChild(element);
   }
 
@@ -124,7 +151,7 @@ class TaxCalculation {
     const currentElement = event.target;
     const taxElement = currentElement.parentNode.parentNode;
 
-    let id = +taxElement.id;
+    let id = +taxElement.id.split('tax_')[1];
 
     let tax = this.filterTaxes(id);
 
@@ -179,6 +206,11 @@ class TaxCalculation {
     const dateElement = this.createDateElement();
     const incomeElement = this.createIncomeElement();
     const currencyElement = this.createCurrencyElement();
+
+    const courseElement = this.createCourseElement();
+    const sumElement = this.createSumElement();
+    const taxItemElement = this.createTaxItemElement();
+
     const btnRemoveElement = this.createBtnRemoveElement();
 
     const taxDataElement = document.createElement('div');
@@ -187,6 +219,10 @@ class TaxCalculation {
     taxDataElement.appendChild(dateElement);
     taxDataElement.appendChild(incomeElement);
     taxDataElement.appendChild(currencyElement);
+    taxDataElement.appendChild(courseElement);
+    taxDataElement.appendChild(sumElement);
+    taxDataElement.appendChild(taxItemElement);
+
     taxDataElement.appendChild(btnRemoveElement);
 
     const taxElement = document.createElement('div');
@@ -218,7 +254,7 @@ class TaxCalculation {
         minDate: new Date(year - 2, 0, 1)
       });
 
-    taxElement.id = id;
+    taxElement.id = `tax_${id}`;
 
     return taxElement;
   }
@@ -231,22 +267,6 @@ class TaxCalculation {
     dateElement.name = "date";
 
     dateElement.setAttribute("required", "true");
-    //dateElement.setAttribute("max", new Date());
-    //dateElement.valueAsDate = new Date();
-
-
-
-    // dateElement.value = formattedDate;
-
-
-    // const dateElement = document.createElement('input');
-    // dateElement.classList.add('tax__item', 'tax__date');
-    // dateElement.type = "date";
-    // dateElement.setAttribute("required", "true");
-    // dateElement.setAttribute("max", new Date());
-    // dateElement.valueAsDate = new Date();
-
-
     return dateElement;
   }
 
@@ -282,6 +302,36 @@ class TaxCalculation {
     return option;
   }
 
+  createCourseElement() {
+    const incomeElement = document.createElement('input');
+    incomeElement.classList.add('tax__item', 'tax__course');
+    incomeElement.type = "text";
+    incomeElement.setAttribute("required", "true");
+    incomeElement.value = "0.00";
+
+    return incomeElement;
+  }
+
+  createSumElement() {
+    const incomeElement = document.createElement('input');
+    incomeElement.classList.add('tax__item', 'tax__sum');
+    incomeElement.type = "text";
+    incomeElement.setAttribute("required", "true");
+    incomeElement.value = "0.00";
+
+    return incomeElement;
+  }
+
+  createTaxItemElement() {
+    const incomeElement = document.createElement('input');
+    incomeElement.classList.add('tax__item', 'tax__tax');
+    incomeElement.type = "text";
+    incomeElement.setAttribute("required", "true");
+    incomeElement.value = "0.00";
+
+    return incomeElement;
+  }
+
   createBtnRemoveElement() {
     const btnRemoveElement = document.createElement('button');
     btnRemoveElement.classList.add('tax__btn-remove');
@@ -292,7 +342,8 @@ class TaxCalculation {
 
 
   setScrollBottom() {
-    const taxesElement = document.querySelector('.taxes');
+    console.log("setScrollBottom");
+    const taxesElement = document.querySelector('.taxes__items');
     taxesElement.scrollTop = taxesElement.scrollHeight;
   }
 }

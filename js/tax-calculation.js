@@ -88,12 +88,16 @@ class TaxCalculation {
           // const sumElement =
 
           if (requestCounter === taxesListLength) {
-            const taxAmount = (allSum / 100 * TaxRate);
-            let totalElement = document.querySelector('.calculate__total');
-            totalElement.textContent = taxAmount.toFixed(2);
+            const taxAmount = (allSum / 100 * TaxRate).toFixed(2);
+            this.setTotalTax(taxAmount);
           }
         });
     }
+  }
+
+  setTotalTax(value) {
+    let totalElement = document.querySelector('.calculate__total');
+    totalElement.textContent = value;
   }
 
 
@@ -105,14 +109,12 @@ class TaxCalculation {
       this.removeTax(id);
       this.removeTaxElement(currentElement.parentNode);
 
-      let totalElement = document.querySelector('.calculate__total');
-      totalElement.textContent = '';
+      this.setTotalTax('');
 
       if(!this.taxesList.length) {
         this.addTaxHtml();
       }
     }
-
   }
 
   removeTax(id) {
@@ -197,6 +199,8 @@ class TaxCalculation {
 
     // let taxDataElement = taxElement.querySelector('.tax__date');
     // taxDataElement.focus();
+
+    this.setTotalTax('');
 
     this.setScrollBottom();
   }
@@ -303,33 +307,37 @@ class TaxCalculation {
   }
 
   createCourseElement() {
-    const incomeElement = document.createElement('input');
-    incomeElement.classList.add('tax__item', 'tax__course');
-    incomeElement.type = "text";
-    incomeElement.setAttribute("required", "true");
-    incomeElement.value = "0.00";
+    const courseElement = document.createElement('input');
+    courseElement.classList.add('tax__item', 'tax__course');
+    courseElement.type = "text";
+    courseElement.setAttribute("required", "true");
+    courseElement.readOnly = true;
+    courseElement.value = "0.00";
 
-    return incomeElement;
+    return courseElement;
   }
 
   createSumElement() {
-    const incomeElement = document.createElement('input');
-    incomeElement.classList.add('tax__item', 'tax__sum');
-    incomeElement.type = "text";
-    incomeElement.setAttribute("required", "true");
-    incomeElement.value = "0.00";
+    const sumElement = document.createElement('input');
+    sumElement.classList.add('tax__item', 'tax__sum');
+    sumElement.type = "text";
+    sumElement.setAttribute("required", "true");
+    sumElement.readOnly = true;
+    sumElement.value = "0.00";
 
-    return incomeElement;
+    return sumElement;
   }
 
   createTaxItemElement() {
-    const incomeElement = document.createElement('input');
-    incomeElement.classList.add('tax__item', 'tax__tax');
-    incomeElement.type = "text";
-    incomeElement.setAttribute("required", "true");
-    incomeElement.value = "0.00";
+    const taxElement = document.createElement('input');
+    taxElement.classList.add('tax__item', 'tax__tax');
+    taxElement.type = "text";
+    taxElement.setAttribute("required", "true");
+    taxElement.readOnly = true;
 
-    return incomeElement;
+    taxElement.value = "0.00";
+
+    return taxElement;
   }
 
   createBtnRemoveElement() {
@@ -342,7 +350,6 @@ class TaxCalculation {
 
 
   setScrollBottom() {
-    console.log("setScrollBottom");
     const taxesElement = document.querySelector('.taxes__items');
     taxesElement.scrollTop = taxesElement.scrollHeight;
   }

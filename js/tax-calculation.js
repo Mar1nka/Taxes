@@ -38,10 +38,6 @@ class TaxCalculation {
 
     this.addTaxHtml();
 
-    // let buttonCalculate = document.querySelector('.button--calculate');
-    // this.buttonCalculateHandler = this.buttonCalculateHandler.bind(this);
-    // buttonCalculate.addEventListener('click', this.buttonCalculateHandler);
-
     const taxesForm = document.querySelector('.taxes');
     this.submitHandler = this.submitHandler.bind(this);
     taxesForm.addEventListener('submit', this.submitHandler);
@@ -54,7 +50,6 @@ class TaxCalculation {
 
 
   calculateTaxes() {
-
     let requestCounter = 0;
     let allSum = 0;
     let taxesListLength = this.taxesList.length;
@@ -69,23 +64,17 @@ class TaxCalculation {
           allSum = allSum + sum;
 
           const id = this.taxesList[i].id;
+          const taxElement = document.querySelector(`#tax_${id}`);
 
-          const courseElement = document.querySelector(`#tax_${id} .tax__data .tax__course`);
+          const courseElement = taxElement.querySelector('.tax__course');
           courseElement.value = `${reply.Cur_OfficialRate} / ${reply.Cur_Scale}`;
 
-          const sumElement = document.querySelector(`#tax_${id} .tax__data .tax__sum`);
+          const sumElement = taxElement.querySelector('.tax__sum');
           sumElement.value = sum.toFixed(2);
 
-          const taxItemElement = document.querySelector(`#tax_${id} .tax__data .tax__tax`);
+          const taxItemElement = taxElement.querySelector('.tax__tax');
           const tax = sum / 100 * TaxRate;
           taxItemElement.value = tax.toFixed(2);
-
-          // const taxDataElement = document.getElementById(id);
-          // const children = taxDataElement.children;
-          //
-          // console.log(children);
-
-          // const sumElement =
 
           if (requestCounter === taxesListLength) {
             const taxAmount = (allSum / 100 * TaxRate).toFixed(2);
@@ -97,7 +86,13 @@ class TaxCalculation {
 
   setTotalTax(value) {
     let totalElement = document.querySelector('.calculate__total');
-    totalElement.textContent = value;
+    let newValue = '';
+
+    if(value) {
+      newValue = `${value} BYN`;
+    }
+
+    totalElement.textContent = newValue
   }
 
 
@@ -109,7 +104,7 @@ class TaxCalculation {
       this.removeTax(id);
       this.removeTaxElement(currentElement.parentNode);
 
-      this.setTotalTax('');
+      this.setTotalTax(null);
 
       if(!this.taxesList.length) {
         this.addTaxHtml();
@@ -138,7 +133,6 @@ class TaxCalculation {
 
 
   formatInputIncome(event) {
-
     const currentElement = event.target;
 
     if (currentElement.classList.contains("tax__income")) {
@@ -154,7 +148,6 @@ class TaxCalculation {
     const taxElement = currentElement.parentNode.parentNode;
 
     let id = +taxElement.id.split('tax_')[1];
-
     let tax = this.filterTaxes(id);
 
     if (tax) {
@@ -200,8 +193,7 @@ class TaxCalculation {
     // let taxDataElement = taxElement.querySelector('.tax__date');
     // taxDataElement.focus();
 
-    this.setTotalTax('');
-
+    this.setTotalTax(null);
     this.setScrollBottom();
   }
 
@@ -235,11 +227,18 @@ class TaxCalculation {
     taxElement.appendChild(taxDataElement);
     taxElement.appendChild(btnRemoveElement);
 
+
+    const picker = this.createDatePicker(dateElement);
+    taxElement.id = `tax_${id}`;
+
+    return taxElement;
+  }
+
+  createDatePicker(dateElement) {
     const date  = new Date();
     const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDate();
-
 
     const picker = datepicker(dateElement,
       {
@@ -255,12 +254,10 @@ class TaxCalculation {
           input.value = value;
         },
         maxDate: new Date(year, month, day),
-        minDate: new Date(year - 2, 0, 1)
+        minDate: new Date(2016, 0, 1)
       });
 
-    taxElement.id = `tax_${id}`;
-
-    return taxElement;
+    return picker;
   }
 
   createDateElement() {
@@ -269,6 +266,7 @@ class TaxCalculation {
     dateElement.classList.add('tax__item', 'tax__date');
     dateElement.type = "text";
     dateElement.name = "date";
+    dateElement.autocomplete="off";
 
     dateElement.setAttribute("required", "true");
     return dateElement;
@@ -280,6 +278,7 @@ class TaxCalculation {
     incomeElement.type = "text";
     incomeElement.setAttribute("required", "true");
     incomeElement.value = "0.00";
+    incomeElement.autocomplete="off";
 
     return incomeElement;
   }
@@ -313,6 +312,7 @@ class TaxCalculation {
     courseElement.setAttribute("required", "true");
     courseElement.readOnly = true;
     courseElement.value = "0.00";
+    courseElement.style = 'outline: none';
 
     return courseElement;
   }
@@ -324,6 +324,7 @@ class TaxCalculation {
     sumElement.setAttribute("required", "true");
     sumElement.readOnly = true;
     sumElement.value = "0.00";
+    sumElement.style = 'outline: none';
 
     return sumElement;
   }
@@ -334,6 +335,7 @@ class TaxCalculation {
     taxElement.type = "text";
     taxElement.setAttribute("required", "true");
     taxElement.readOnly = true;
+    taxElement.style = 'outline: none';
 
     taxElement.value = "0.00";
 
@@ -343,7 +345,6 @@ class TaxCalculation {
   createBtnRemoveElement() {
     const btnRemoveElement = document.createElement('button');
     btnRemoveElement.classList.add('tax__btn-remove');
-    btnRemoveElement.textContent = "X";
 
     return btnRemoveElement;
   }

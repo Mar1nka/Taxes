@@ -4,6 +4,7 @@ const lastPartUrl = 'ParamMode=2';
 export default class CurrencyService {
 
   getCurrency(currency, date) {
+    console.log("date", date);
     let url = `${firstPartUrl}${currency}?onDate=${date}&${lastPartUrl}`;
 
     return new Promise(function (resolve, reject) {

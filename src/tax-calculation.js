@@ -30,7 +30,6 @@ class TaxCalculation {
   constructor() {
     this.taxesList = [];
 
-
     this.setHandlerAddTask();
 
     let taxesItemsElement = document.querySelector('.taxes__items');
@@ -42,6 +41,8 @@ class TaxCalculation {
 
     this.clickRemoveHandler = this.clickRemoveHandler.bind(this);
     taxesItemsElement.addEventListener("click", this.clickRemoveHandler);
+
+    this.refreshData = this.refreshData.bind(this);
 
     this.addTaxHtml();
 
@@ -62,6 +63,7 @@ class TaxCalculation {
     let taxesListLength = this.taxesList.length;
 
     for (let i = 0; i < taxesListLength; i++) {
+      console.log("date 1", this.taxesList[i].date);
       currencyService.getCurrency(this.taxesList[i].currency, this.taxesList[i].date)
         .then((response) => {
           requestCounter++;
@@ -150,8 +152,12 @@ class TaxCalculation {
   }
 
 
-  focusOutHandler(element) {
+  focusOutHandler(event) {
     const currentElement = event.target;
+    this.refreshData(currentElement);
+  }
+
+  refreshData(currentElement) {
     const taxElement = currentElement.parentNode.parentNode;
 
     let id = +taxElement.id.split('tax_')[1];
@@ -192,7 +198,8 @@ class TaxCalculation {
     let tax = new TaxData();
     this.taxesList.push(tax);
 
-    const taxElement = this.createTaxElement(tax.id);
+    const {taxElement, datePicker}  = this.createTaxElement(tax.id);
+    tax.setDatePicker(datePicker);
 
     const taxesItemsElement = document.querySelector('.taxes__items');
     taxesItemsElement.appendChild(taxElement);
@@ -234,11 +241,13 @@ class TaxCalculation {
     taxElement.appendChild(taxDataElement);
     taxElement.appendChild(btnRemoveElement);
 
-
-    const picker = this.createDatePicker(dateElement);
+    const datePicker = this.createDatePicker(dateElement);
     taxElement.id = `tax_${id}`;
 
-    return taxElement;
+    return {
+      taxElement,
+      datePicker
+    };
   }
 
   createDatePicker(dateElement) {
@@ -261,11 +270,15 @@ class TaxCalculation {
           input.value = value;
         },
         maxDate: new Date(year, month, day),
-        minDate: new Date(2016, 0, 1)
+        minDate: new Date(2016, 0, 1),
+        onSelect: (instance, selectedDate) => {
+          this.refreshData(dateElement);
+        }
       });
 
     return picker;
   }
+
 
   createDateElement() {
 

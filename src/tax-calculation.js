@@ -91,7 +91,12 @@ class TaxCalculation {
             const taxAmount = (allSum / 100 * TaxRate).toFixed(2);
             this.setTotalTax(taxAmount);
           }
-        });
+        }).catch(function(e) {
+        // Функция не перевыбросила исключение 'e'
+        // в результате произойдёт resolve(undefined)
+        // для Promise, возвращённого функцией catch
+        console.log(e); // "oh, no!"
+      });
     }
   }
 

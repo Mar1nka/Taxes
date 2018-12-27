@@ -4,8 +4,14 @@ const lastPartUrl = 'ParamMode=2';
 export default class CurrencyService {
 
   getCurrency(currency, date) {
+    const testElement = document.querySelector('.test');
+    const text = testElement.innerHTML;
+    testElement.textContent = `${text}  getCurrency: ${date}`;
+
     console.log("date", date);
     let url = `${firstPartUrl}${currency}?onDate=${date}&${lastPartUrl}`;
+
+    testElement.textContent = `${text}  getCurrency: ${date}  url: ${url}`;
 
     return new Promise(function (resolve, reject) {
 

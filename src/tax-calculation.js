@@ -63,7 +63,9 @@ class TaxCalculation {
     let taxesListLength = this.taxesList.length;
 
     for (let i = 0; i < taxesListLength; i++) {
-      console.log("date 1", this.taxesList[i].date);
+      const testElement = document.querySelector('.test');
+      const text = testElement.innerHTML;
+      testElement.textContent = `${text}  calculateTaxes: ${this.taxesList[i].date}`;;
       currencyService.getCurrency(this.taxesList[i].currency, this.taxesList[i].date)
         .then((response) => {
           requestCounter++;

@@ -207,7 +207,7 @@ option {
   width: 20px;
   height: 20px;
 
-  background: url('../image/bin.svg') no-repeat ;
+  background: url('/image/bin.svg') no-repeat ;
   background-size: 20px 20px;
   /*background: black;*/
 

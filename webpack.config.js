@@ -22,15 +22,16 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract(
-          {
-            fallback: 'style-loader',
-            use: ['css-loader']
-          }
-        ),
+        // use: ExtractTextPlugin.extract(
+        //   {
+        //     fallback: 'style-loader',
+        //     use: ['css-loader']
+        //   }
+        // ),
+        use: ['style-loader', 'css-loader']
         // loader: [
-        //   require.resolve('style-loader'),
-        //   require.resolve('css-loader')
+        //   // require.resolve('style-loader'),
+        //   // require.resolve('css-loader')
         // ]
       }
     ]

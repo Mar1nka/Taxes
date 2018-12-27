@@ -2,9 +2,10 @@ import TaxData from "./tax-data"
 // import EventObserver from "./observer"
 import CurrencyService from "./currency-service"
 import Datepicker from "js-datepicker"
-import '../node_modules/js-datepicker/dist/datepicker.min.css'
+import 'js-datepicker/dist/datepicker.min.css'
 
-// import "../css/style.css"
+import "../css/style.css"
+
 
 
 const Currencies = [

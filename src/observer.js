@@ -1,15 +1,12 @@
-// const global = window;
 
-(function () {
   'use strict';
-
   let instance;
 
   /**
    * Function-constructor which creates only one instance of object
    * which used for saving triggering and listening of custom events
    * */
-  function EventObserver() {
+  export  default function EventObserver() {
     if (instance) {
       return instance;
     }
@@ -68,7 +65,3 @@
 
     this.eventCollection = [];
   };
-
-  window.EventObserver = new EventObserver();
-
-})();

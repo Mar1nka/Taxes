@@ -1,0 +1,35 @@
+{
+  "name": "taxes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "js-datepicker": "^4.0.10"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^2.1.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.28.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --hot --open --mode development",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mar1nka/Taxes.git"
+  },
+  "author": "Marina Sakovich",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mar1nka/Taxes/issues"
+  },
+  "homepage": "https://github.com/Mar1nka/Taxes#readme"
+}

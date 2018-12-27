@@ -1,4 +1,10 @@
-//import TaxData from "./tax-data.js";
+import TaxData from "./tax-data"
+// import EventObserver from "./observer"
+import CurrencyService from "./currency-service"
+import Datepicker from "js-datepicker"
+import '../node_modules/js-datepicker/dist/datepicker.min.css'
+
+// import "../css/style.css"
 
 
 const Currencies = [
@@ -16,7 +22,7 @@ let optionUSD = document.createElement('option');
 optionUSD.value = "USD";
 optionUSD.innerHTML = "USD";
 
-const CurrencyService = window.CurrencyService;
+const currencyService = new CurrencyService();
 const TaxRate = 13;
 
 class TaxCalculation {
@@ -55,7 +61,7 @@ class TaxCalculation {
     let taxesListLength = this.taxesList.length;
 
     for (let i = 0; i < taxesListLength; i++) {
-      CurrencyService.getCurrency(this.taxesList[i].currency, this.taxesList[i].date)
+      currencyService.getCurrency(this.taxesList[i].currency, this.taxesList[i].date)
         .then((response) => {
           requestCounter++;
 
@@ -240,7 +246,7 @@ class TaxCalculation {
     const month = date.getMonth();
     const day = date.getDate();
 
-    const picker = datepicker(dateElement,
+    const picker = new Datepicker(dateElement,
       {
         customMonths: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',
           'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],

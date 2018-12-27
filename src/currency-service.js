@@ -1,4 +1,4 @@
-const firstPartUrl = 'http://www.nbrb.by/API/ExRates/Rates/';
+const firstPartUrl = 'https://www.nbrb.by/API/ExRates/Rates/';
 const lastPartUrl = 'ParamMode=2';
 
 export default class CurrencyService {

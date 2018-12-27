@@ -63,9 +63,6 @@ class TaxCalculation {
     let taxesListLength = this.taxesList.length;
 
     for (let i = 0; i < taxesListLength; i++) {
-      const testElement = document.querySelector('.test');
-      const text = testElement.innerHTML;
-      testElement.textContent = `${text}  calculateTaxes: ${this.taxesList[i].date}`;;
       currencyService.getCurrency(this.taxesList[i].currency, this.taxesList[i].date)
         .then((response) => {
           requestCounter++;
@@ -92,10 +89,6 @@ class TaxCalculation {
             this.setTotalTax(taxAmount);
           }
         }).catch(function(e) {
-        // Функция не перевыбросила исключение 'e'
-        // в результате произойдёт resolve(undefined)
-        // для Promise, возвращённого функцией catch
-        console.log(e); // "oh, no!"
       });
     }
   }

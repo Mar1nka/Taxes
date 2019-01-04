@@ -15,10 +15,6 @@ module.exports = {
         test: /\.js?$/, // определяем тип файлов
         exclude: /(node_modules)/,  // исключаем из обработки папку node_modules
         loader: "babel-loader",   // определяем загрузчик
-        options: {
-          // presets: ["env", "react"],    // используемые плагины
-          // plugins: [ 'transform-object-rest-spread' ]
-        }
       },
       {
         test: /\.css$/,
@@ -35,5 +31,4 @@ module.exports = {
       publicPath: '/public/',
       filename: 'style.css'})
   ]
-  // devtool: 'source-map'
 };

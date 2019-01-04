@@ -2,10 +2,10 @@ let taxId = 0;
 
 export default class TaxData {
 
-  constructor() {
-    this.date = null;
-    this.income = null;
-    this.currency = 'USD';
+  constructor(date, income, currency) {
+    this.date = date;
+    this.income = income;
+    this.currency = currency;
     this.id = ++taxId;
     this.datePicker = undefined;
   }

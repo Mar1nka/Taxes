@@ -22,18 +22,19 @@ body {
 
 
 .taxes {
-  margin-top: 60px;
+  margin: 60px 0 20px 0;
   border: 2px solid lightgray;
   padding: 10px 20px;
+  background: #F5F7FA;
 
-  max-height: 600px;
-  min-height: 600px;
-  height: 600px;
+  max-height: 650px;
+  min-height: 650px;
+  height: 650px;
   /*overflow: auto;*/
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
 
 }
@@ -87,7 +88,7 @@ body {
   min-width: 70px;
 }
 
-.title__data, .tax__date {
+.title__date, .tax__date {
   max-width: 150px;
   min-width: 150px;
 }
@@ -231,9 +232,9 @@ option {
 }
 
 
-.button--add {
-  width: 30px;
-  height: 30px;
+.button__add {
+  width: 35px;
+  height: 35px;
   margin: 10px 0;
 
   background: #487650;
@@ -245,7 +246,7 @@ option {
 }
 
 
-.button--add:hover {
+.button__add:hover {
   cursor: pointer;
   background: #5a9164;
   transition: background 0.3s;
@@ -261,14 +262,12 @@ option {
 
   /*align-self: flex-end;*/
 
-
   padding: 5px 0;
   margin-top: 15px;
 
-
 }
 
-.button--calculate {
+.button__calculate {
   background: #064D70;
   border-radius: 5px;
   color: white;
@@ -277,7 +276,7 @@ option {
   padding: 10px;
 }
 
-.button--calculate:hover {
+.button__calculate:hover {
   cursor: pointer;
   background: #065a85;
   transition: background 0.3s;
@@ -287,3 +286,47 @@ option {
   margin: 0 20px;
   font-size: 26px;
 }
+
+
+.functional {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.save {
+  align-self: flex-end;
+}
+
+.button__save {
+  background: white;
+  border-radius: 5px;
+  border: 2px solid #064D70;
+  color: #064D70;
+  outline: none;
+
+  padding: 5px;
+
+  width: 80px;
+
+  margin-bottom: 10px;
+}
+
+.button__save:hover {
+  cursor: pointer;
+  color: #065a85;
+  border: 2px solid #065a85;
+  transition: all 0.3s;
+}
+
+.button__save--disabled {
+  opacity: 0.5;
+}
+
+.button__save--disabled:hover {
+  cursor: default;
+}
+
+

@@ -9,19 +9,11 @@ import "../css/style.css"
 
 
 const Currencies = [
+  {text: "RUB", textCode: "RUB"},
   {text: "USD", textCode: "USD"},
-  {text: "EUR", textCode: "EUR"},
-  {text: "RUB", textCode: "RUB"}
+  {text: "EUR", textCode: "EUR"}
 ];
 
-
-let optionRUB = document.createElement('option');
-optionRUB.value = "RUB";
-optionRUB.innerHTML = "RUB";
-
-let optionUSD = document.createElement('option');
-optionUSD.value = "USD";
-optionUSD.innerHTML = "USD";
 
 const currencyService = new CurrencyService();
 const TaxRate = 13;
@@ -49,6 +41,82 @@ class TaxCalculation {
     const taxesForm = document.querySelector('.taxes');
     this.submitHandler = this.submitHandler.bind(this);
     taxesForm.addEventListener('submit', this.submitHandler);
+
+
+    this.clickSaveHandler = this.clickSaveHandler.bind(this);
+    const saveButtonElement = document.querySelector('.button__save');
+    this.setDisabledSaveButton(true);
+    saveButtonElement.addEventListener('click', this.clickSaveHandler);
+  }
+
+  clickSaveHandler(event) {
+    let titleData = document.querySelector('.title__date').innerHTML;
+    let titleIncome = document.querySelector('.title__income').innerHTML;
+    let titleCurrency = document.querySelector('.title__currency').innerHTML;
+    let titleCourse = document.querySelector('.title__course').innerHTML;
+    let titleSum = document.querySelector('.title__sum').innerHTML;
+    let titleTax = document.querySelector('.title__tax').innerHTML;
+
+    titleData = titleData.split(',').join(' ');
+    titleIncome = titleIncome.split(',').join(' ');
+    titleCurrency = titleCurrency.split(',').join(' ');
+    titleCourse = titleCourse.split(',').join(' ');
+    titleSum = titleSum.split(',').join(' ');
+    titleTax = titleTax.split(',').join(' ');
+
+    const data = [
+      [titleData, titleIncome, titleCurrency, titleCourse, titleSum, titleTax],
+    ];
+
+    let taxesListLength = this.taxesList.length;
+
+    for (let i = 0; i < taxesListLength; i++) {
+      const id = this.taxesList[i].id;
+      const taxElement = document.querySelector(`#tax_${id}`);
+
+      const dateValue = taxElement.querySelector('.tax__date').value;
+      const incomeValue = taxElement.querySelector('.tax__income').value;
+      const currencyValue = taxElement.querySelector('.tax__currency').value;
+      const courseValue = taxElement.querySelector('.tax__course').value;
+      const sumValue = taxElement.querySelector('.tax__sum').value;
+      const taxValue = taxElement.querySelector('.tax__tax').value;
+
+      data.push([dateValue, incomeValue, currencyValue, courseValue, sumValue, taxValue]);
+    }
+
+    let totalSum = document.querySelector('.calculate__total').innerHTML;
+    totalSum = totalSum.split(' ')[0];
+    data.push(['', '', '', '', '', totalSum]);
+
+
+    this.downloadCsv(data);
+  }
+
+  downloadCsv(data) {
+    let csv = '';
+    data.forEach((row) => {
+      csv += row.join(',');
+      csv += "\n";
+    });
+
+    const hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'taxes.csv';
+    hiddenElement.click();
+  }
+
+
+  setDisabledSaveButton(isDisabled) {
+    const saveButtonElement = document.querySelector('.button__save');
+
+    if(isDisabled) {
+      saveButtonElement.setAttribute("disabled", "disabled");
+      saveButtonElement.classList.add('button__save--disabled');
+    } else {
+      saveButtonElement.removeAttribute("disabled");
+      saveButtonElement.classList.remove('button__save--disabled');
+    }
   }
 
   submitHandler(event) {
@@ -87,6 +155,8 @@ class TaxCalculation {
           if (requestCounter === taxesListLength) {
             const taxAmount = (allSum / 100 * TaxRate).toFixed(2);
             this.setTotalTax(taxAmount);
+
+            this.setDisabledSaveButton(false);
           }
         }).catch(function(e) {
       });
@@ -114,6 +184,7 @@ class TaxCalculation {
       this.removeTaxElement(currentElement.parentNode);
 
       this.setTotalTax(null);
+      this.setDisabledSaveButton(true);
 
       if(!this.taxesList.length) {
         this.addTaxHtml();
@@ -163,15 +234,40 @@ class TaxCalculation {
     let id = +taxElement.id.split('tax_')[1];
     let tax = this.filterTaxes(id);
 
+    let isChangeData = false;
+
     if (tax) {
       if (currentElement.classList.contains("tax__date")) {
-        tax.date = currentElement.value;
+        isChangeData = this.isChangeData(tax.date, currentElement.value);
+        const date = currentElement.value. split('.');
+        const day = date[0];
+        const month = date[1];
+        const year = date[2];
+        const newDate = `${year}-${month}-${day}`;
+        tax.date = newDate;
       } else if (currentElement.classList.contains("tax__income")) {
+        isChangeData = this.isChangeData(tax.income, currentElement.value);
         tax.income = +currentElement.value;
       } else if (currentElement.classList.contains("tax__currency")) {
+        isChangeData = this.isChangeData(tax.currency, currentElement.value);
         tax.currency = currentElement.value;
       }
     }
+
+    if(isChangeData) {
+      this.setTotalTax(null);
+      this.setDisabledSaveButton(true);
+    }
+  }
+
+  isChangeData(prev, current) {
+    let isChangeData = false;
+
+    if(prev != current) {
+      isChangeData = true;
+    }
+
+    return isChangeData;
   }
 
   filterTaxes(id) {
@@ -188,14 +284,14 @@ class TaxCalculation {
   }
 
   setHandlerAddTask() {
-    this.addTax = document.querySelector('.button--add');
+    this.addTax = document.querySelector('.button__add');
 
     this.addTaxHtml = this.addTaxHtml.bind(this);
     this.addTax.addEventListener('click', this.addTaxHtml);
   }
 
   addTaxHtml() {
-    let tax = new TaxData();
+    let tax = new TaxData(new Date(), 0, Currencies[0].textCode);
     this.taxesList.push(tax);
 
     const {taxElement, datePicker}  = this.createTaxElement(tax.id);
@@ -208,6 +304,7 @@ class TaxCalculation {
     // taxDataElement.focus();
 
     this.setTotalTax(null);
+    this.setDisabledSaveButton(true);
     this.setScrollBottom();
   }
 

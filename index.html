@@ -20,7 +20,7 @@
 
 
     <div class="taxes__title title">
-      <div class="title__item title__data">Дата получения дохода</div>
+      <div class="title__item title__date">Дата получения дохода</div>
       <div class="title__item title__income">Размер дахода</div>
       <div class="title__item title__currency">Наименование денежной единицы</div>
       <div class="title__item title__course">Курс валюты / за кол-во единиц</div>
@@ -46,13 +46,19 @@
 
     </div>
 
-    <button class="button--add" type="button">+</button>
+    <button class="button__add" type="button">+</button>
 
   </div>
 
-  <div class="calculate">
-    <button class="button--calculate">Вычислить</button>
-    <div class="calculate__total"></div>
+  <div class="functional">
+    <div class="calculate">
+      <button class="button__calculate">Вычислить</button>
+      <div class="calculate__total"></div>
+    </div>
+
+    <div class="save">
+      <button class="button__save" type="button">Сохранить в CSV</button>
+    </div>
   </div>
 
 </form>

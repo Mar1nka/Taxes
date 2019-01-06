@@ -36,8 +36,6 @@ class TaxCalculation {
 
     this.refreshData = this.refreshData.bind(this);
 
-    this.addTaxHtml();
-
     const taxesForm = document.querySelector('.taxes');
     this.submitHandler = this.submitHandler.bind(this);
     taxesForm.addEventListener('submit', this.submitHandler);
@@ -47,7 +45,11 @@ class TaxCalculation {
     const saveButtonElement = document.querySelector('.button__save');
     this.setDisabledSaveButton(true);
     saveButtonElement.addEventListener('click', this.clickSaveHandler);
+
+    this.addTaxHtml();
+
   }
+
 
   clickSaveHandler(event) {
     let titleData = document.querySelector('.title__date').innerHTML;
@@ -125,13 +127,16 @@ class TaxCalculation {
   }
 
 
+
+
   calculateTaxes() {
     let requestCounter = 0;
     let allSum = 0;
     let taxesListLength = this.taxesList.length;
 
     for (let i = 0; i < taxesListLength; i++) {
-      currencyService.getCurrency(this.taxesList[i].currency, this.taxesList[i].date)
+      const date = this.getHyphenDateFromDDMMYYYY(this.taxesList[i].date);
+      currencyService.getCurrency(this.taxesList[i].currency, date)
         .then((response) => {
           requestCounter++;
 
@@ -164,11 +169,15 @@ class TaxCalculation {
   }
 
   setTotalTax(value) {
-    let totalElement = document.querySelector('.calculate__total');
+    const functionalResultElement = document.querySelector('.functional__result');
+    functionalResultElement.classList.add('functional__result--hidden');
+    const totalElement = document.querySelector('.calculate__total');
+
     let newValue = '';
 
     if(value) {
       newValue = `${value} BYN`;
+      functionalResultElement.classList.remove('functional__result--hidden');
     }
 
     totalElement.textContent = newValue
@@ -238,13 +247,9 @@ class TaxCalculation {
 
     if (tax) {
       if (currentElement.classList.contains("tax__date")) {
-        isChangeData = this.isChangeData(tax.date, currentElement.value);
-        const date = currentElement.value. split('.');
-        const day = date[0];
-        const month = date[1];
-        const year = date[2];
-        const newDate = `${year}-${month}-${day}`;
-        tax.date = newDate;
+        const date = this.getDDMMYYYYFromPointDate(currentElement.value);
+        isChangeData = this.isChangeData(tax.date, date);
+        tax.date = date;
       } else if (currentElement.classList.contains("tax__income")) {
         isChangeData = this.isChangeData(tax.income, currentElement.value);
         tax.income = +currentElement.value;
@@ -263,7 +268,7 @@ class TaxCalculation {
   isChangeData(prev, current) {
     let isChangeData = false;
 
-    if(prev != current) {
+    if(prev.day != current.day || prev.month != current.month || prev.year != current.year) {
       isChangeData = true;
     }
 
@@ -285,31 +290,40 @@ class TaxCalculation {
 
   setHandlerAddTask() {
     this.addTax = document.querySelector('.button__add');
-
     this.addTaxHtml = this.addTaxHtml.bind(this);
     this.addTax.addEventListener('click', this.addTaxHtml);
   }
 
   addTaxHtml() {
-    let tax = new TaxData(new Date(), 0, Currencies[0].textCode);
+    let date = this.getDDMMYYYYFromDate(new Date());
+
+    if(this.taxesList.length) {
+      date = this.taxesList[this.taxesList.length - 1].date;
+    }
+
+    let tax = new TaxData(date, 0, Currencies[0].textCode);
     this.taxesList.push(tax);
 
-    const {taxElement, datePicker}  = this.createTaxElement(tax.id);
+    const {taxElement, datePicker}  = this.createTaxElement(tax.id, tax.date);
     tax.setDatePicker(datePicker);
 
     const taxesItemsElement = document.querySelector('.taxes__items');
-    taxesItemsElement.appendChild(taxElement);
+    taxesItemsElement.prepend(taxElement);
 
-    // let taxDataElement = taxElement.querySelector('.tax__date');
-    // taxDataElement.focus();
+    let taxDateElement = taxElement.querySelector('.tax__date');
+    setTimeout(()=>{this.setFocus(taxDateElement)}, 0);
 
     this.setTotalTax(null);
     this.setDisabledSaveButton(true);
-    this.setScrollBottom();
+    // this.setScrollBottom();
+  }
+
+  setFocus(element) {
+    element.focus();
   }
 
 
-  createTaxElement(id) {
+  createTaxElement(id, date) {
     const dateElement = this.createDateElement();
     const incomeElement = this.createIncomeElement();
     const currencyElement = this.createCurrencyElement();
@@ -338,7 +352,8 @@ class TaxCalculation {
     taxElement.appendChild(taxDataElement);
     taxElement.appendChild(btnRemoveElement);
 
-    const datePicker = this.createDatePicker(dateElement);
+    const datePicker = this.createDatePicker(dateElement, date);
+
     taxElement.id = `tax_${id}`;
 
     return {
@@ -347,26 +362,23 @@ class TaxCalculation {
     };
   }
 
-  createDatePicker(dateElement) {
-    const date  = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDate();
-
+  createDatePicker(dateElement, date) {
+    let nowDate  = new Date();
+    let {day: nowDay, month: nowMonth, year: nowYear} = this.getDDMMYYYYFromDate(nowDate);
     const picker = new Datepicker(dateElement,
       {
         customMonths: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',
           'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
         customDays: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
         startDay: 1,
-        dateSelected: new Date(year, month, day),
+        dateSelected: new Date(date.year, date.month -1, date.day),
         overlayPlaceholder: 'Введите год...',
         overlayButton: "Перейти",
         formatter: (input, date, instance) => {
           const value = date.toLocaleDateString();
           input.value = value;
         },
-        maxDate: new Date(year, month, day),
+        maxDate: new Date(nowYear, nowMonth -1, nowDay),
         minDate: new Date(2016, 0, 1),
         onSelect: (instance, selectedDate) => {
           this.refreshData(dateElement);
@@ -375,6 +387,31 @@ class TaxCalculation {
 
     return picker;
   }
+
+  getDDMMYYYYFromPointDate(dateString) {
+    const date = dateString.split('.');
+    const day = date[0];
+    const month = date[1];
+    const year = date[2];
+
+    return {day, month, year};
+  }
+
+  getDDMMYYYYFromDate(date) {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    return {day, month, year};
+  }
+
+  getHyphenDateFromDDMMYYYY(date) {
+    const {day, month, year} = date;
+    const newDate = `${year}-${month}-${day}`;
+
+    return newDate;
+  }
+
 
 
   createDateElement() {
@@ -399,6 +436,8 @@ class TaxCalculation {
 
     return incomeElement;
   }
+
+
 
   createCurrencyElement() {
     const currencyElement = document.createElement('select');
@@ -430,6 +469,7 @@ class TaxCalculation {
     courseElement.readOnly = true;
     courseElement.value = "0.00";
     courseElement.style = 'outline: none';
+    courseElement.tabIndex = -1;
 
     return courseElement;
   }
@@ -442,6 +482,7 @@ class TaxCalculation {
     sumElement.readOnly = true;
     sumElement.value = "0.00";
     sumElement.style = 'outline: none';
+    sumElement.tabIndex = -1;
 
     return sumElement;
   }
@@ -453,7 +494,7 @@ class TaxCalculation {
     taxElement.setAttribute("required", "true");
     taxElement.readOnly = true;
     taxElement.style = 'outline: none';
-
+    taxElement.tabIndex = -1;
     taxElement.value = "0.00";
 
     return taxElement;
@@ -462,6 +503,8 @@ class TaxCalculation {
   createBtnRemoveElement() {
     const btnRemoveElement = document.createElement('button');
     btnRemoveElement.classList.add('tax__btn-remove');
+    btnRemoveElement.type="button";
+
 
     return btnRemoveElement;
   }

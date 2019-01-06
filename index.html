@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Taxes</title>
 
-  <link href="css/style.css" rel="stylesheet">
+  <!--<link href="css/style.css" rel="stylesheet">-->
 
 </head>
 <body>
@@ -25,41 +25,41 @@
       <div class="title__item title__currency">Наименование денежной единицы</div>
       <div class="title__item title__course">Курс валюты / за кол-во единиц</div>
       <div class="title__item title__sum">Сумма, BYN</div>
-      <div class="title__item title__tax">Налог (13%), BYN</div>
-    </div>
-
-    <div class="taxes__items">
-      <!--<div class="tax">-->
-      <!--<div class="tax__data">-->
-      <!--<input class="tax__item tax__date " type="date">-->
-      <!--<input class="tax__item tax__income " type=number placeholder="20000,00">-->
-
-      <!--<select class="tax__item tax__currency " name="currency">-->
-      <!--<option value="usd">USD</option>-->
-      <!--<option value="eur">EUR</option>-->
-      <!--<option value="rub">RUB</option>-->
-      <!--<option value="byn">BYN</option>-->
-      <!--</select>-->
-      <!--</div>-->
-      <!--<button class="tax__btn-remove">X</button>-->
-      <!--</div>-->
-
+      <div class="title__item title__tax">Налог, BYN (13%)</div>
     </div>
 
     <button class="button__add" type="button">+</button>
+    <div class="taxes__items">
 
+      <!--<div class="tax">-->
+      <!--<div class="tax__data">-->
+      <!--<input class="tax__item tax__date">-->
+      <!--<input class="tax__item tax__income" type=number >-->
+
+      <!--<select class="tax__item tax__currency " name="currency">-->
+      <!--<option value="rub">RUB</option>-->
+      <!--<option value="usd">USD</option>-->
+      <!--<option value="eur">EUR</option>-->
+      <!--</select>-->
+      <!--</div>-->
+      <!--</div>-->
+
+
+    </div>
   </div>
 
   <div class="functional">
-    <div class="calculate">
-      <button class="button__calculate">Вычислить</button>
-      <div class="calculate__total"></div>
+    <div class="functional__result functional__result--hidden">
+      <p>Общая сумма налога:</p>
+      <p class="calculate__total"></p>
     </div>
 
-    <div class="save">
-      <button class="button__save" type="button">Сохранить в CSV</button>
+    <div class="functional__buttons">
+      <button class="button button__calculate">Вычислить</button>
+      <button class="button button__save" type="button">Сохранить CSV</button>
     </div>
   </div>
+
 
 </form>
 

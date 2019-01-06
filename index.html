@@ -21,29 +21,52 @@
 
     <div class="taxes__title title">
       <div class="title__item title__date">Дата получения дохода</div>
-      <div class="title__item title__income">Размер дахода</div>
+      <div class="title__item title__income tax__item--money">Размер дахода</div>
       <div class="title__item title__currency">Наименование денежной единицы</div>
-      <div class="title__item title__course">Курс валюты / за кол-во единиц</div>
-      <div class="title__item title__sum">Сумма, BYN</div>
-      <div class="title__item title__tax">Налог, BYN (13%)</div>
+      <div class="title__item title__course tax__item--money">Курс валюты / за кол-во единиц</div>
+      <div class="title__item title__sum tax__item--money">Сумма, BYN</div>
+      <div class="title__item title__tax tax__item--money">Налог, BYN (13%)</div>
     </div>
 
     <button class="button__add" type="button">+</button>
     <div class="taxes__items">
 
       <!--<div class="tax">-->
-      <!--<div class="tax__data">-->
-      <!--<input class="tax__item tax__date">-->
-      <!--<input class="tax__item tax__income" type=number >-->
+        <!--<div class="tax__data">-->
+          <!--<div class="cell cell__date">-->
+            <!--<input class="tax__item tax__date" value="06.01.2019">-->
+          <!--</div>-->
 
-      <!--<select class="tax__item tax__currency " name="currency">-->
-      <!--<option value="rub">RUB</option>-->
-      <!--<option value="usd">USD</option>-->
-      <!--<option value="eur">EUR</option>-->
-      <!--</select>-->
-      <!--</div>-->
-      <!--</div>-->
+          <!--<div class="cell cell__income">-->
+            <!--<input class="tax__item tax__income tax__item&#45;&#45;money" value="0.00">-->
+          <!--</div>-->
 
+          <!--<div class="cell cell__currency">-->
+            <!--<select class="tax__item tax__currency " name="currency">-->
+              <!--<option value="rub">RUB</option>-->
+              <!--<option value="usd">USD</option>-->
+              <!--<option value="eur">EUR</option>-->
+            <!--</select>-->
+          <!--</div>-->
+
+          <!--<div class="cell cell__course cell&#45;&#45;only-read">-->
+            <!--<input class="tax__item tax__course tax__item&#45;&#45;only-read tax__item&#45;&#45;money" readonly value="0.00 / 1"-->
+                   <!--tabindex="-1">-->
+          <!--</div>-->
+
+          <!--<div class="cell cell__sum cell&#45;&#45;only-read">-->
+            <!--<input class="tax__item tax__sum tax__item&#45;&#45;only-read tax__item&#45;&#45;money" readonly value="0.00"-->
+                   <!--tabindex="-1">-->
+          <!--</div>-->
+
+          <!--<div class="cell cell__tax cell&#45;&#45;only-read">-->
+            <!--<input class="tax__item tax__tax tax__item&#45;&#45;only-read tax__item&#45;&#45;money" readonly value="0.00"-->
+                   <!--tabindex="-1">-->
+          <!--</div>-->
+        <!--</div>-->
+
+        <!--<button class="tax__btn-remove" type="button"></button>-->
+      <!--</div>-->
 
     </div>
   </div>
@@ -55,8 +78,8 @@
     </div>
 
     <div class="functional__buttons">
-      <button class="button button__calculate">Вычислить</button>
-      <button class="button button__save" type="button">Сохранить CSV</button>
+      <button class="button button__calculate" type="button">Вычислить</button>
+      <button class="button button__save" type="button">Сохранить в CSV</button>
     </div>
   </div>
 

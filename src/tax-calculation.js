@@ -36,7 +36,7 @@ class TaxCalculation {
     this.focusOutHandler = this.focusOutHandler.bind(this);
     this.formatInputIncome = this.formatInputIncome.bind(this);
     this.clickRemoveHandler = this.clickRemoveHandler.bind(this);
-    taxesItemsElement.addEventListener('focusout', this.focusOutHandler);
+    taxesItemsElement.addEventListener('blur', this.focusOutHandler, true);
     taxesItemsElement.addEventListener("input", this.formatInputIncome);
     taxesItemsElement.addEventListener("click", this.clickRemoveHandler);
 
@@ -50,6 +50,8 @@ class TaxCalculation {
     this.clickSaveHandler = this.clickSaveHandler.bind(this);
     const saveButtonElement = document.querySelector('.button__save');
     saveButtonElement.addEventListener('click', this.clickSaveHandler);
+
+    this.datePickerFocusOutHandler = this.datePickerFocusOutHandler.bind(this);
   }
 
 
@@ -241,22 +243,28 @@ class TaxCalculation {
 
   focusOutHandler(event) {
     const currentElement = event.target;
-    this.refreshData(currentElement);
+    const relatedTarget = event.relatedTarget;
+
+    this.refreshData(currentElement,relatedTarget);
   }
 
-  refreshData(currentElement) {
-    const taxElement = currentElement.parentNode.parentNode;
-
+  refreshData(currentElement, relatedTarget ) {
+    const taxElement = currentElement.closest('.tax');
     let id = +taxElement.id.split('tax_')[1];
     let tax = this.filterTaxes(id);
-
     let isChangeData = false;
+
+    const cellElement = currentElement.closest('.cell');
+    console.log("cellElement", cellElement);
 
     if (tax) {
       if (currentElement.classList.contains("tax__date")) {
         const date = this.getDDMMYYYYFromPointDate(currentElement.value);
         isChangeData = this.isChangeData(tax.date, date);
         tax.date = date;
+        // currentElement.blur();
+        // tax.datePicker.hide();
+
       } else if (currentElement.classList.contains("tax__income")) {
         isChangeData = this.isChangeData(tax.income, currentElement.value);
         tax.income = +currentElement.value;
@@ -358,6 +366,14 @@ class TaxCalculation {
     const dateInputElement = dateElement.querySelector('.tax__date');
 
     const datePicker = this.createDatePicker(dateInputElement, date);
+    const inputElements = datePicker.calendar.querySelectorAll('*');
+    inputElements.forEach((element) => {
+      element.tabIndex = 0;
+    });
+
+    datePicker.calendar.addEventListener('blur', this.datePickerFocusOutHandler, true);
+
+    // console.log('datePicker', datePicker);
 
     taxElement.id = `tax_${id}`;
 
@@ -365,6 +381,19 @@ class TaxCalculation {
       taxElement,
       datePicker
     };
+  }
+
+  datePickerFocusOutHandler(event) {
+    const element = event.relatedTarget.closest('.qs-datepicker');
+
+    if(!element) {
+      const currentElement = event.target;
+      const taxElement = currentElement.closest('.tax');
+      let id = +taxElement.id.split('tax_')[1];
+      let tax = this.filterTaxes(id);
+      tax.datePicker.hide();
+    }
+
   }
 
   createDatePicker(dateElement, date) {
@@ -387,6 +416,7 @@ class TaxCalculation {
         minDate: new Date(2016, 0, 1),
         onSelect: (instance, selectedDate) => {
           this.refreshData(dateElement);
+          instance.hide();
         }
       });
 
@@ -426,6 +456,7 @@ class TaxCalculation {
     dateElement.type = "text";
     dateElement.name = "date";
     dateElement.autocomplete="off";
+    dateElement.readOnly = true;
 
     dateElement.setAttribute("required", "true");
 
@@ -480,49 +511,39 @@ class TaxCalculation {
   }
 
   createCourseElement() {
-    const courseElement = document.createElement('input');
-    courseElement.classList.add('tax__item', 'tax__course', 'tax__item--money');
-    courseElement.type = "text";
-    courseElement.setAttribute("required", "true");
-    courseElement.readOnly = true;
-    courseElement.value = "0.00 / 1";
+    const courseElement = document.createElement('span');
+    courseElement.classList.add('tax__item', 'tax__course', 'tax__item--money', 'tax__item--only-read');
+    courseElement.textContent = "0.00 / 100";
     courseElement.tabIndex = -1;
 
     const cellElement = document.createElement('div');
-    cellElement.classList.add('cell', 'cell__course', 'cell--only-read');
+    cellElement.classList.add('cell', 'cell__course');
     cellElement.appendChild(courseElement);
 
     return cellElement;
   }
 
   createSumElement() {
-    const sumElement = document.createElement('input');
-    sumElement.classList.add('tax__item', 'tax__sum', 'tax__item--money');
-    sumElement.type = "text";
-    sumElement.setAttribute("required", "true");
-    sumElement.readOnly = true;
-    sumElement.value = "0.00";
+    const sumElement = document.createElement('span');
+    sumElement.classList.add('tax__item', 'tax__sum', 'tax__item--money', 'tax__item--only-read');
+    sumElement.textContent = "0.00";
     sumElement.tabIndex = -1;
 
     const cellElement = document.createElement('div');
-    cellElement.classList.add('cell', 'cell__sum', 'cell--only-read');
+    cellElement.classList.add('cell', 'cell__sum');
     cellElement.appendChild(sumElement);
 
     return cellElement;
   }
 
   createTaxItemElement() {
-    const taxElement = document.createElement('input');
-    taxElement.classList.add('tax__item', 'tax__tax', 'tax__item--money');
-    taxElement.type = "text";
-    taxElement.setAttribute("required", "true");
-    taxElement.readOnly = true;
-    taxElement.value = "0.00";
+    const taxElement = document.createElement('span');
+    taxElement.classList.add('tax__item', 'tax__tax', 'tax__item--money', 'tax__item--only-read');
+    taxElement.textContent = "0.00";
     taxElement.tabIndex = -1;
 
-
     const cellElement = document.createElement('div');
-    cellElement.classList.add('cell', 'cell__tax', 'cell--only-read');
+    cellElement.classList.add('cell', 'cell__tax');
     cellElement.appendChild(taxElement);
 
     return cellElement;

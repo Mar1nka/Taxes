@@ -3,16 +3,11 @@
   padding: 0;
   margin: 0;
   border: none;
-  --main-color: #3A5799;
-  --second-color: #3d6fb4;
-  --third-color: #4380cb;
-
+  --main-color: #0d47a1;
+  --second-color: #1976d2;
+  font-family: 'Roboto Mono', monospace;
 }
 
-
-:root {
-  --main-color: #ccc;
-}
 
 html {
   width: 100%;
@@ -27,13 +22,18 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+
+  background: #e4e4e4;
 }
 
 .taxes {
   margin: 40px 0 20px 0;
   border: 2px solid lightgray;
+  box-shadow: 0 0 6px 1px lightgray;
+  border-radius: 5px;
+
   padding: 10px 20px;
-  background: #F5F7FA;
+  background: white;
 
   max-height: 650px;
   min-height: 650px;
@@ -84,9 +84,11 @@ body {
 }
 
 .title__item {
+  display: flex;
+  justify-content: flex-start;
+
   color: white;
-  text-align: left;
-  font-size: 16px;
+  font-size: 15px;
 
   padding: 10px;
 }
@@ -118,8 +120,8 @@ option {
 }
 
 .title__course, .cell__course {
-  max-width: 130px;
-  min-width: 130px;
+  max-width: 145px;
+  min-width: 145px;
 }
 
 .title__sum, .cell__sum {
@@ -161,16 +163,16 @@ option {
   border-top: 1px solid gray;
 }
 
-.taxes__items .tax:nth-child(odd) {
-  background: #e4e4e4;
-}
+/*.taxes__items .tax:nth-child(odd) {*/
+  /*background: white;*/
+/*}*/
 
-.taxes__items .tax:nth-child(even) {
-  background: #F5F7FA;
-}
+/*.taxes__items .tax:nth-child(even) {*/
+  /*background: #F5F7FA;*/
+/*}*/
 
 .taxes__basic .taxes__items .tax:hover {
-  background: rgba(223, 237, 255, 0.8);
+  background: #ebeef3;
 }
 
 
@@ -186,35 +188,43 @@ option {
 .cell {
   width: 100%;
 
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
   outline: none;
-  min-height: 42px;
+  min-height: 38px;
 }
 
 .tax__item {
   width: 100%;
   height: 100%;
 
-  padding: 0 10px;
+  display: flex;
+  align-items: center;
 
+  font-size: 14px;
+
+  padding: 0 10px;
   text-align: left;
   background: transparent;
-
   outline: none;
 }
 
-.cell:focus-within  {
+.tax__item:focus  {
   outline: 2px solid var(--main-color);
 }
 
 
-.tax .cell--only-read {
+.tax .tax__item--only-read{
   outline: none;
 }
 
 
-
-.tax__item--money {
+.title__item--money, .tax__item--money {
   text-align: right;
+  justify-content: flex-end;
 }
 
 .tax-fields {
@@ -254,60 +264,51 @@ option {
 }
 
 .tax__btn-remove:focus {
-  outline: 2px solid var(--main-color);
+  transform: scale(1.3);
 }
 
 .button__add {
   width: 35px;
   height: 35px;
   margin: 10px 0;
-
-  border: 2px solid var(--second-color);
-  background: white;
-  color: var(--second-color);
-  /*box-shadow:0px 0px 16px 0px var(--second-color) inset;*/
+  background: var(--main-color);
+  color: white;
+  box-shadow: 0 3px 6px 1px lightgray;
   border-radius: 50%;
   outline: none;
   font-weight: bold;
   font-size: 20px;
+  transition: background-color ease-in-out 0.2s;
 }
 
-.button__add:hover {
+.button__add:hover, .button__add:focus  {
   cursor: pointer;
-  border-color: var(--third-color);
-  color: var(--third-color);
-  /*box-shadow:0px 0px 16px 2px var(--third-color) inset;*/
-  transition: all 0.3s;
+  background: var(--second-color);
+  color: white;
 }
 
 .button__add:focus {
-  outline: 2px solid var(--main-color);
+  transform: scale(1.1);
 }
 
 .button__calculate {
-  background: var(--second-color);
-  border: 2px solid var(--second-color);
+  background: var(--main-color);
+  border: 2px solid var(--main-color);
 
   border-radius: 5px;
   color: white;
   outline: none;
 
-  /*padding: 10px;*/
 }
 
-.button__calculate:hover {
+.button__calculate:hover, .button__calculate:focus {
   cursor: pointer;
-  background: var(--third-color);
-  border-color: var(--third-color);
-  transition: all 0.3s;
-}
-
-.button__calculate:focus {
-  outline: 2px solid var(--main-color);
+  background: var(--second-color);
+  border-color: var(--second-color);
 }
 
 .calculate__total {
-  font-size: 26px;
+  font-size: 20px;
   margin-left: 10px;
 }
 
@@ -343,29 +344,31 @@ option {
 }
 
 .button {
-  padding: 10px 5px;
-  width: 125px;
+  padding: 10px;
   margin-left: 10px;
+  box-shadow: 0 3px 6px 2px lightgrey;
+  transition: all ease-in-out 0.2s;
+}
+
+.button:focus {
+  transform: scale(1.1);
 }
 
 
 .button__save {
   background: white;
   border-radius: 5px;
-  border: 2px solid var(--second-color);
-  color: var(--second-color);
+  border: 2px solid var(--main-color);
+  color: var(--main-color);
   outline: none;
 }
 
-.button__save:hover {
+.button__save:hover, .button__save:focus {
   cursor: pointer;
-  color: var(--third-color);
-  border: 2px solid var(--third-color);
-  transition: all 0.3s;
+  color: var(--second-color);
+  border: 2px solid var(--second-color);
 }
-.button__save:focus {
-  outline: 2px solid var(--main-color);
-}
+
 
 .button__save--disabled {
   opacity: 0.5;

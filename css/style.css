@@ -100,8 +100,8 @@ body {
 }
 
 .title__date, .cell__date {
-  max-width: 120px;
-  min-width: 120px;
+  max-width: 160px;
+  min-width: 160px;
 }
 
 .title__income, .cell__income {
@@ -239,7 +239,6 @@ option {
 }
 
 
-
 .tax__btn-remove {
   margin: 0 15px;
   font-size: 18px;
@@ -257,7 +256,7 @@ option {
   background-color: transparent;
 }
 
-.tax__btn-remove:hover {
+.tax__btn-remove:hover, .tax__btn-remove:focus {
   opacity: 1;
   transition: opacity 0.3s;
   cursor: pointer;
@@ -266,6 +265,7 @@ option {
 .tax__btn-remove:focus {
   transform: scale(1.3);
 }
+
 
 .button__add {
   width: 35px;

@@ -41,27 +41,25 @@ class TaxCalculation {
     taxesItemsElement.addEventListener("click", this.clickRemoveHandler);
 
     const taxesForm = document.querySelector('.taxes');
+    this.submitHandler = this.submitHandler.bind(this);
     taxesForm.addEventListener('submit', this.submitHandler);
 
-    const buttonCalculateElement = document.querySelector('.button__calculate');
-    this.clickCalculateButton = this.clickCalculateButton.bind(this);
-    buttonCalculateElement.addEventListener('click', this.clickCalculateButton);
 
     this.clickSaveHandler = this.clickSaveHandler.bind(this);
     const saveButtonElement = document.querySelector('.button__save');
     saveButtonElement.addEventListener('click', this.clickSaveHandler);
 
-    this.datePickerFocusOutHandler = this.datePickerFocusOutHandler.bind(this);
+    // this.datePickerFocusOutHandler = this.datePickerFocusOutHandler.bind(this);
   }
 
 
   clickSaveHandler(event) {
-    let titleData = document.querySelector('.title__date').innerHTML;
-    let titleIncome = document.querySelector('.title__income').innerHTML;
-    let titleCurrency = document.querySelector('.title__currency').innerHTML;
-    let titleCourse = document.querySelector('.title__course').innerHTML;
-    let titleSum = document.querySelector('.title__sum').innerHTML;
-    let titleTax = document.querySelector('.title__tax').innerHTML;
+    let titleData = document.querySelector('.title__date').textContent;
+    let titleIncome = document.querySelector('.title__income').textContent;
+    let titleCurrency = document.querySelector('.title__currency').textContent;
+    let titleCourse = document.querySelector('.title__course').textContent;
+    let titleSum = document.querySelector('.title__sum').textContent;
+    let titleTax = document.querySelector('.title__tax').textContent;
 
     titleData = titleData.split(',').join(' ');
     titleIncome = titleIncome.split(',').join(' ');
@@ -83,14 +81,16 @@ class TaxCalculation {
       const dateValue = taxElement.querySelector('.tax__date').value;
       const incomeValue = taxElement.querySelector('.tax__income').value;
       const currencyValue = taxElement.querySelector('.tax__currency').value;
-      const courseValue = taxElement.querySelector('.tax__course').value;
-      const sumValue = taxElement.querySelector('.tax__sum').value;
-      const taxValue = taxElement.querySelector('.tax__tax').value;
+      const courseValue = taxElement.querySelector('.tax__course').textContent;
+      const sumValue = taxElement.querySelector('.tax__sum').textContent;
+      const taxValue = taxElement.querySelector('.tax__tax').textContent;
 
       data.push([dateValue, incomeValue, currencyValue, courseValue, sumValue, taxValue]);
     }
 
-    let totalSum = document.querySelector('.calculate__total').innerHTML;
+    data.push(['', '', '', '', '', '']);
+
+    let totalSum = document.querySelector('.calculate__total').textContent;
     totalSum = totalSum.split(' ')[0];
     data.push(['', '', '', '', '', totalSum]);
 
@@ -125,12 +125,11 @@ class TaxCalculation {
     }
   }
 
-  clickCalculateButton(event) {
-    this.calculateTaxes();
-  }
+
 
   submitHandler(event) {
     event.preventDefault();
+    this.calculateTaxes();
   }
 
 
@@ -142,8 +141,8 @@ class TaxCalculation {
     let taxesListLength = this.taxesList.length;
 
     for (let i = 0; i < taxesListLength; i++) {
-      const date = this.getHyphenDateFromDDMMYYYY(this.taxesList[i].date);
-      currencyService.getCurrency(this.taxesList[i].currency, date)
+      console.log('this.taxesList[i].date', this.taxesList[i].date);
+      currencyService.getCurrency(this.taxesList[i].currency, this.taxesList[i].date)
         .then((response) => {
           requestCounter++;
 
@@ -155,14 +154,14 @@ class TaxCalculation {
           const taxElement = document.querySelector(`#tax_${id}`);
 
           const courseElement = taxElement.querySelector('.tax__course');
-          courseElement.value = `${reply.Cur_OfficialRate} / ${reply.Cur_Scale}`;
+          courseElement.textContent = `${reply.Cur_OfficialRate} / ${reply.Cur_Scale}`;
 
           const sumElement = taxElement.querySelector('.tax__sum');
-          sumElement.value = sum.toFixed(2);
+          sumElement.textContent = sum.toFixed(2);
 
           const taxItemElement = taxElement.querySelector('.tax__tax');
           const tax = sum / 100 * TaxRate;
-          taxItemElement.value = tax.toFixed(2);
+          taxItemElement.textContent = tax.toFixed(2);
 
           if (requestCounter === taxesListLength) {
             const taxAmount = (allSum / 100 * TaxRate).toFixed(2);
@@ -235,9 +234,10 @@ class TaxCalculation {
       currentElement.value = currentElement.value.replace(/[^\d,.]*/g, '')
         .replace(/([,.])[,.]+/g, '$1')
         .replace(/^[^\d]*(\d+([.,]\d{0,2})?).*$/g, '$1');
-    } else if(currentElement.classList.contains("tax__date")) {
-      currentElement.value = currentElement.value.replace(/[^\d.]*/g, '')
     }
+    // else if(currentElement.classList.contains("tax__date")) {
+    //   currentElement.value = currentElement.value.replace(/[^\d.]*/g, '')
+    // }
   }
 
 
@@ -255,16 +255,11 @@ class TaxCalculation {
     let isChangeData = false;
 
     const cellElement = currentElement.closest('.cell');
-    console.log("cellElement", cellElement);
 
     if (tax) {
       if (currentElement.classList.contains("tax__date")) {
-        const date = this.getDDMMYYYYFromPointDate(currentElement.value);
-        isChangeData = this.isChangeData(tax.date, date);
-        tax.date = date;
-        // currentElement.blur();
-        // tax.datePicker.hide();
-
+        isChangeData = this.isChangeData(tax.date, currentElement.value);
+        tax.date = currentElement.value;
       } else if (currentElement.classList.contains("tax__income")) {
         isChangeData = this.isChangeData(tax.income, currentElement.value);
         tax.income = +currentElement.value;
@@ -280,10 +275,10 @@ class TaxCalculation {
     }
   }
 
-  isChangeData(prev, current) {
+  isChangeData(prevValue, currentValue) {
     let isChangeData = false;
 
-    if(prev.day != current.day || prev.month != current.month || prev.year != current.year) {
+    if(prevValue !== currentValue) {
       isChangeData = true;
     }
 
@@ -306,7 +301,7 @@ class TaxCalculation {
 
 
   addTaxHtml() {
-    let date = this.getDDMMYYYYFromDate(new Date());
+    let date = this.getHyphenDateFromDate(new Date());
 
     if(this.taxesList.length) {
       date = this.taxesList[this.taxesList.length - 1].date;
@@ -315,8 +310,7 @@ class TaxCalculation {
     let tax = new TaxData(date, 0, Currencies[0].textCode);
     this.taxesList.push(tax);
 
-    const {taxElement, datePicker}  = this.createTaxElement(tax.id, tax.date);
-    tax.setDatePicker(datePicker);
+    const taxElement  = this.createTaxElement(tax.id, tax.date);
 
     const taxesItemsElement = document.querySelector('.taxes__items');
     taxesItemsElement.prepend(taxElement);
@@ -335,7 +329,7 @@ class TaxCalculation {
 
 
   createTaxElement(id, date) {
-    const dateElement = this.createDateElement();
+    const dateElement = this.createDateElement(date);
     const incomeElement = this.createIncomeElement();
     const currencyElement = this.createCurrencyElement();
 
@@ -365,72 +359,61 @@ class TaxCalculation {
 
     const dateInputElement = dateElement.querySelector('.tax__date');
 
-    const datePicker = this.createDatePicker(dateInputElement, date);
-    const inputElements = datePicker.calendar.querySelectorAll('*');
-    inputElements.forEach((element) => {
-      element.tabIndex = 0;
-    });
+    // const datePicker = this.createDatePicker(dateInputElement, date);
+    // const inputElements = datePicker.calendar.querySelectorAll('*');
+    // inputElements.forEach((element) => {
+    //   element.tabIndex = 0;
+    // });
+    //
+    // datePicker.calendar.addEventListener('blur', this.datePickerFocusOutHandler, true);
 
-    datePicker.calendar.addEventListener('blur', this.datePickerFocusOutHandler, true);
-
-    // console.log('datePicker', datePicker);
+    const datePicker = undefined;
 
     taxElement.id = `tax_${id}`;
 
-    return {
-      taxElement,
-      datePicker
-    };
+    return taxElement;
   }
 
-  datePickerFocusOutHandler(event) {
-    const element = event.relatedTarget.closest('.qs-datepicker');
-
-    if(!element) {
-      const currentElement = event.target;
-      const taxElement = currentElement.closest('.tax');
-      let id = +taxElement.id.split('tax_')[1];
-      let tax = this.filterTaxes(id);
-      tax.datePicker.hide();
-    }
-
-  }
+  // datePickerFocusOutHandler(event) {
+  //   const element = event.relatedTarget.closest('.qs-datepicker');
+  //
+  //   if(!element) {
+  //     const currentElement = event.target;
+  //     const taxElement = currentElement.closest('.tax');
+  //     let id = +taxElement.id.split('tax_')[1];
+  //     let tax = this.filterTaxes(id);
+  //     tax.datePicker.hide();
+  //   }
+  // }
 
   createDatePicker(dateElement, date) {
-    let nowDate  = new Date();
-    let {day: nowDay, month: nowMonth, year: nowYear} = this.getDDMMYYYYFromDate(nowDate);
-    const picker = new Datepicker(dateElement,
-      {
-        customMonths: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',
-          'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-        customDays: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-        startDay: 1,
-        dateSelected: new Date(date.year, date.month -1, date.day),
-        overlayPlaceholder: 'Введите год...',
-        overlayButton: "Перейти",
-        formatter: (input, date, instance) => {
-          const value = date.toLocaleDateString();
-          input.value = value;
-        },
-        maxDate: new Date(nowYear, nowMonth -1, nowDay),
-        minDate: new Date(2016, 0, 1),
-        onSelect: (instance, selectedDate) => {
-          this.refreshData(dateElement);
-          instance.hide();
-        }
-      });
-
-    return picker;
+    // let nowDate  = new Date();
+    //
+    // let {day: nowDay, month: nowMonth, year: nowYear} = this.getDDMMYYYYFromDate(nowDate);
+    // const picker = new Datepicker(dateElement,
+    //   {
+    //     customMonths: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',
+    //       'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+    //     customDays: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+    //     startDay: 1,
+    //     dateSelected: new Date(date.year, date.month -1, date.day),
+    //     overlayPlaceholder: 'Введите год...',
+    //     overlayButton: "Перейти",
+    //     formatter: (input, date, instance) => {
+    //       const value = date.toLocaleDateString();
+    //       input.value = value;
+    //     },
+    //     maxDate: new Date(nowYear, nowMonth -1, nowDay),
+    //     minDate: new Date(2016, 0, 1),
+    //     onSelect: (instance, selectedDate) => {
+    //       this.refreshData(dateElement);
+    //       instance.hide();
+    //     }
+    //   });
+    //
+    // return picker;
   }
 
-  getDDMMYYYYFromPointDate(dateString) {
-    const date = dateString.split('.');
-    const day = date[0];
-    const month = date[1];
-    const year = date[2];
-
-    return {day, month, year};
-  }
 
   getDDMMYYYYFromDate(date) {
     const day = date.getDate();
@@ -440,8 +423,24 @@ class TaxCalculation {
     return {day, month, year};
   }
 
+  getHyphenDateFromDate(date) {
+    const ddmmyyyy = this.getDDMMYYYYFromDate(date);
+    const hyphenDate = this.getHyphenDateFromDDMMYYYY(ddmmyyyy);
+
+    return hyphenDate;
+  }
+
   getHyphenDateFromDDMMYYYY(date) {
-    const {day, month, year} = date;
+    let {day, month, year} = date;
+
+    if(day < 10) {
+      day = `0${day}`;
+    }
+
+    if(month < 10) {
+      month = `0${month}`;
+    }
+
     const newDate = `${year}-${month}-${day}`;
 
     return newDate;
@@ -449,16 +448,22 @@ class TaxCalculation {
 
 
 
-  createDateElement() {
+
+  createDateElement(date) {
 
     const dateElement = document.createElement('input');
     dateElement.classList.add('tax__item', 'tax__date');
-    dateElement.type = "text";
+    // dateElement.type = "text";
+    dateElement.type = "date";
     dateElement.name = "date";
     dateElement.autocomplete="off";
-    dateElement.readOnly = true;
-
+    // dateElement.readOnly = true;
     dateElement.setAttribute("required", "true");
+
+    dateElement.value = date;
+    dateElement.min = "2016-01-01";
+    dateElement.max = this.getHyphenDateFromDate(new Date());
+
 
     const cellElement = document.createElement('div');
     cellElement.classList.add('cell', 'cell__date');

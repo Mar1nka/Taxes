@@ -8,7 +8,6 @@
   font-family: 'Roboto Mono', monospace;
 }
 
-
 html {
   display: flex;
   width: 100%;
@@ -32,24 +31,18 @@ body {
 }
 
 .taxes {
-  margin: 40px 0 20px 0;
-  border: 2px solid lightgray;
-  box-shadow: 0 0 6px 1px lightgray;
-  border-radius: 5px;
-
-  padding: 10px 20px;
-  background: white;
-
-  max-height: 650px;
-  min-height: 650px;
-  height: 650px;
-  /*overflow: auto;*/
-
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-
+  min-height: 650px;
+  max-height: 650px;
+  margin: 40px 0 20px 0;
+  border: 2px solid lightgray;
+  box-shadow: 0 0 6px 1px lightgray;
+  border-radius: 5px;
+  padding: 10px 20px;
+  background: white;
 }
 
 .taxes__basic {
@@ -378,20 +371,22 @@ option {
 
 
 .button__save--disabled {
-  opacity: 0.5;
+  color: rgba(0,0,0,.26);
+  border-color: rgba(0,0,0,.26);
 }
 
 .button__save--disabled:hover {
+  color: rgba(0,0,0,.26);
+  border-color: rgba(0,0,0,.26);
   cursor: default;
 }
 
 .total-sum {
-  width: 100%;
-
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 100%;
   border: none;
 }
 

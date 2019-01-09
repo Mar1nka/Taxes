@@ -252,9 +252,9 @@ class TaxCalculation {
         isChangeData = this.isChangeData(tax.date, currentElement.value);
         tax.date = currentElement.value;
 
-        const e = new KeyboardEvent("keydown");
-        e.key = 13;
-        document.dispatchEvent(e);
+        // const e = new KeyboardEvent("keydown");
+        // e.key = 27;
+        // document.dispatchEvent(e);
       } else if (currentElement.classList.contains("tax__income")) {
         isChangeData = this.isChangeData(tax.income, currentElement.value);
         tax.income = +currentElement.value;

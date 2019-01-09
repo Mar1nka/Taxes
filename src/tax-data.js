@@ -7,11 +7,6 @@ export default class TaxData {
     this.income = income;
     this.currency = currency;
     this.id = ++taxId;
-    // this.datePicker = undefined;
   }
-
-  // setDatePicker (datePicker) {
-  //   this.datePicker = datePicker;
-  // }
 }
 

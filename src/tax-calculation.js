@@ -1,12 +1,8 @@
 import TaxData from "./tax-data"
 import CurrencyService from "./currency-service"
-import Datepicker from "js-datepicker"
-import 'js-datepicker/dist/datepicker.min.css'
-
 import "../css/style.css"
 
 
-// re: /^\s*(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})\s*$/,
 
 const Currencies = [
   {text: "RUB", textCode: "RUB"},
@@ -48,8 +44,6 @@ class TaxCalculation {
     this.clickSaveHandler = this.clickSaveHandler.bind(this);
     const saveButtonElement = document.querySelector('.button__save');
     saveButtonElement.addEventListener('click', this.clickSaveHandler);
-
-    // this.datePickerFocusOutHandler = this.datePickerFocusOutHandler.bind(this);
   }
 
 
@@ -235,9 +229,6 @@ class TaxCalculation {
         .replace(/([,.])[,.]+/g, '$1')
         .replace(/^[^\d]*(\d+([.,]\d{0,2})?).*$/g, '$1');
     }
-    // else if(currentElement.classList.contains("tax__date")) {
-    //   currentElement.value = currentElement.value.replace(/[^\d.]*/g, '')
-    // }
   }
 
 
@@ -260,6 +251,10 @@ class TaxCalculation {
       if (currentElement.classList.contains("tax__date")) {
         isChangeData = this.isChangeData(tax.date, currentElement.value);
         tax.date = currentElement.value;
+
+        const e = new KeyboardEvent("keydown");
+        e.key = 13;
+        document.dispatchEvent(e);
       } else if (currentElement.classList.contains("tax__income")) {
         isChangeData = this.isChangeData(tax.income, currentElement.value);
         tax.income = +currentElement.value;
@@ -320,7 +315,6 @@ class TaxCalculation {
 
     this.setTotalTax(null);
     this.setDisabledSaveButton(true);
-    // this.setScrollBottom();
   }
 
   setFocus(element) {
@@ -356,62 +350,9 @@ class TaxCalculation {
 
     taxElement.appendChild(taxDataElement);
     taxElement.appendChild(btnRemoveElement);
-
-    const dateInputElement = dateElement.querySelector('.tax__date');
-
-    // const datePicker = this.createDatePicker(dateInputElement, date);
-    // const inputElements = datePicker.calendar.querySelectorAll('*');
-    // inputElements.forEach((element) => {
-    //   element.tabIndex = 0;
-    // });
-    //
-    // datePicker.calendar.addEventListener('blur', this.datePickerFocusOutHandler, true);
-
-    const datePicker = undefined;
-
     taxElement.id = `tax_${id}`;
 
     return taxElement;
-  }
-
-  // datePickerFocusOutHandler(event) {
-  //   const element = event.relatedTarget.closest('.qs-datepicker');
-  //
-  //   if(!element) {
-  //     const currentElement = event.target;
-  //     const taxElement = currentElement.closest('.tax');
-  //     let id = +taxElement.id.split('tax_')[1];
-  //     let tax = this.filterTaxes(id);
-  //     tax.datePicker.hide();
-  //   }
-  // }
-
-  createDatePicker(dateElement, date) {
-    // let nowDate  = new Date();
-    //
-    // let {day: nowDay, month: nowMonth, year: nowYear} = this.getDDMMYYYYFromDate(nowDate);
-    // const picker = new Datepicker(dateElement,
-    //   {
-    //     customMonths: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',
-    //       'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-    //     customDays: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-    //     startDay: 1,
-    //     dateSelected: new Date(date.year, date.month -1, date.day),
-    //     overlayPlaceholder: 'Введите год...',
-    //     overlayButton: "Перейти",
-    //     formatter: (input, date, instance) => {
-    //       const value = date.toLocaleDateString();
-    //       input.value = value;
-    //     },
-    //     maxDate: new Date(nowYear, nowMonth -1, nowDay),
-    //     minDate: new Date(2016, 0, 1),
-    //     onSelect: (instance, selectedDate) => {
-    //       this.refreshData(dateElement);
-    //       instance.hide();
-    //     }
-    //   });
-    //
-    // return picker;
   }
 
 
@@ -453,11 +394,9 @@ class TaxCalculation {
 
     const dateElement = document.createElement('input');
     dateElement.classList.add('tax__item', 'tax__date');
-    // dateElement.type = "text";
     dateElement.type = "date";
     dateElement.name = "date";
     dateElement.autocomplete="off";
-    // dateElement.readOnly = true;
     dateElement.setAttribute("required", "true");
 
     dateElement.value = date;

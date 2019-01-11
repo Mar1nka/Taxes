@@ -191,10 +191,11 @@ class TaxCalculation {
   clickRemoveHandler(event) {
     const currentElement = event.target;
 
-    if (currentElement.classList.contains("taxes__table-body-row-remove")) {
-      const id = +currentElement.parentNode.id.split('tax_')[1];
+    if (currentElement.classList.contains("taxes__table-body-row-field-remove")) {
+      const tableRowElement = currentElement.closest('.taxes__table-body-row');
+      const id = +tableRowElement.id.split('tax_')[1];
       this.removeTax(id);
-      this.removeTaxElement(currentElement.parentNode);
+      this.removeTaxElement(tableRowElement);
 
       this.setTotalTax(null);
       this.setDisabledSaveButton(true);

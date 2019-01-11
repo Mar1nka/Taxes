@@ -299,20 +299,7 @@ option {
   margin-bottom: 30px;
 }
 
-.taxes__functional-result {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  visibility: visible;
 
-  font-size: 18px;
-}
-
-.taxes__functional-result--hidden {
-  visibility: hidden;
-}
 
 .taxes__functional-buttons {
   width: 100%;
@@ -377,38 +364,30 @@ option {
 }
 
 .taxes__functional-result {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  visibility: visible;
+
+  font-size: 18px;
+}
+
+.taxes__functional-result--hidden {
+  visibility: hidden;
+}
+
+
+.taxes__functional-result-sum {
+  border: none;
+  background: none;
   font-size: 20px;
   margin-left: 10px;
 }
 
 
-.total-sum {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: 100%;
-  border: none;
-}
 
-.total-sum .tax__data {
-  border: none;
-}
-
-.total-sum .tax__tax {
-  background: none;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.total {
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
 
 
 

@@ -79,12 +79,12 @@ class TaxCalculation {
       const id = this.taxesList[i].id;
       const taxElement = document.querySelector(`#tax_${id}`);
 
-      const dateValue = taxElement.querySelector('.taxes__table-body-row-date').value;
-      const incomeValue = taxElement.querySelector('.taxes__table-body-row-income').value;
-      const currencyValue = taxElement.querySelector('.taxes__table-body-row-currency').value;
-      const courseValue = taxElement.querySelector('.taxes__table-body-row-course').textContent;
-      const sumValue = taxElement.querySelector('.taxes__table-body-row-sum').textContent;
-      const taxValue = taxElement.querySelector('.taxes__table-body-row-tax').textContent;
+      const dateValue = taxElement.querySelector('.taxes__table-body-row-cell-date').value;
+      const incomeValue = taxElement.querySelector('.taxes__table-body-row-cell-income').value;
+      const currencyValue = taxElement.querySelector('.taxes__table-body-row-cell-currency').value;
+      const courseValue = taxElement.querySelector('.taxes__table-body-row-cell-course').textContent;
+      const sumValue = taxElement.querySelector('.taxes__table-body-row-cell-sum').textContent;
+      const taxValue = taxElement.querySelector('.taxes__table-body-row-cell-tax').textContent;
 
       data.push([dateValue, incomeValue, currencyValue, courseValue, sumValue, taxValue]);
     }
@@ -93,7 +93,7 @@ class TaxCalculation {
 
     let totalSum = document.querySelector('.taxes__functional-result-sum').textContent;
     totalSum = totalSum.split(' ')[0];
-    data.push(['', '', '', '', '', totalSum]);
+    data.push(['Общая сумма налога', totalSum, '', '', '', '']);
 
 
     this.downloadCsv(data);

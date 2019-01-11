@@ -45,11 +45,12 @@ body {
   background: white;
 }
 
+
 .taxes__basic {
   height: 100%;
 }
 
-.menu {
+.taxes__title {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -58,30 +59,27 @@ body {
   margin-bottom: 30px;
 }
 
-.menu__name {
+.taxes__title-name {
   font-size: 24px;
   font-weight: bold;
 }
 
-.menu__buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
+.taxes__table {
+  height: 100%;
 }
 
-.taxes__title {
+
+.taxes__table-header {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  /*padding: 15px;*/
 
   align-items: stretch;
   margin-bottom: 1px;
   background: var(--main-color);
 }
 
-.title__item {
+.taxes__table-header-cell {
   display: flex;
   justify-content: flex-start;
 
@@ -93,21 +91,21 @@ body {
 
 
 
-.title__item, .cell {
+.taxes__table-header-cell, .taxes__table-body-row-cell {
   margin-right: 30px;
 }
 
-.title__date, .cell__date {
+.taxes__table-header-date, .taxes__table-body-row-date {
   max-width: 160px;
   min-width: 160px;
 }
 
-.title__income, .cell__income {
+.taxes__table-header-income, .taxes__table-body-row-income {
   max-width: 100px;
   min-width: 100px;
 }
 
-.title__currency, .cell__currency {
+.taxes__table-header-currency, .taxes__table-body-row-currency {
   max-width: 120px;
   min-width: 120px;
 }
@@ -117,22 +115,28 @@ option {
   color: white;
 }
 
-.title__course, .cell__course {
+.taxes__table-header-course, .taxes__table-body-row-course {
   max-width: 145px;
   min-width: 145px;
 }
 
-.title__sum, .cell__sum {
+.taxes__table-header-sum, .taxes__table-body-row-sum {
   max-width: 120px;
   min-width: 120px;
 }
 
-.title__tax, .cell__tax {
+.taxes__table-header-tax, .taxes__table-body-row-tax {
   max-width: 120px;
   min-width: 120px;
 }
 
-.taxes__items {
+.taxes__table-header-action, .taxes__table-body-row-remove {
+  max-width: 50px;
+  min-width: 50px;
+  margin-right: 0;
+}
+
+.taxes__table-body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -145,7 +149,7 @@ option {
 
 }
 
-.tax {
+.taxes__table-body-row {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -157,33 +161,18 @@ option {
   border-bottom: 1px solid gray;
 }
 
-.tax:first-child {
+.taxes__table-body-row:first-child {
   border-top: 1px solid gray;
 }
 
-/*.taxes__items .tax:nth-child(odd) {*/
-  /*background: white;*/
-/*}*/
 
-/*.taxes__items .tax:nth-child(even) {*/
-  /*background: #F5F7FA;*/
-/*}*/
-
-.taxes__basic .taxes__items .tax:hover {
+.taxes__basic .taxes__table-body .taxes__table-body-row:hover {
   background: #ebeef3;
 }
 
 
 
-.tax__data {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: stretch;
-
-}
-
-.cell {
+.taxes__table-body-row-cell {
   width: 100%;
 
   display: flex;
@@ -195,7 +184,7 @@ option {
   min-height: 38px;
 }
 
-.tax__item {
+.taxes__table-body-row-cell-field {
   width: 100%;
 
   display: flex;
@@ -209,18 +198,18 @@ option {
   outline: none;
 }
 
-.tax__item:focus  {
+.taxes__table-body-row-cell-field:focus  {
   outline: 2px solid var(--main-color);
 }
 
 
-.tax .tax__item--only-read{
+.taxes__table-body-row .taxes__table-body-row-cell-field--only-read{
   color: gray;
   outline: none;
 }
 
 
-.title__item--money, .tax__item--money {
+.taxes__table-header-cell--money, .taxes__table-body-row-cell-field--money {
   text-align: right;
   justify-content: flex-end;
 }
@@ -237,8 +226,16 @@ option {
 }
 
 
-.tax__btn-remove {
-  margin: 0 15px;
+.taxes__table-body-row-remove {
+  /*margin: 0 15px;*/
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.taxes__table-body-row-field-remove {
   font-size: 18px;
   outline: none;
   padding: 5px;
@@ -252,20 +249,21 @@ option {
   background-position: center;
   background-size: 15px 15px;
   background-color: transparent;
+
 }
 
-.tax__btn-remove:hover, .tax__btn-remove:focus {
+.taxes__table-body-row-field-remove:hover, .taxes__table-body-row-field-remove:focus {
   opacity: 1;
   transition: opacity 0.3s;
   cursor: pointer;
 }
 
-.tax__btn-remove:focus {
+.taxes__table-body-row-field-remove:focus {
   transform: scale(1.3);
 }
 
 
-.button__add {
+.taxes__table-add {
   width: 35px;
   height: 35px;
   margin: 10px 0;
@@ -279,38 +277,19 @@ option {
   transition: background-color ease-in-out 0.2s;
 }
 
-.button__add:hover, .button__add:focus  {
+.taxes__table-add:hover, .taxes__table-add:focus  {
   cursor: pointer;
   background: var(--second-color);
   color: white;
 }
 
-.button__add:focus {
+.taxes__table-add:focus {
   transform: scale(1.1);
 }
 
-.button__calculate {
-  background: var(--main-color);
-  border: 2px solid var(--main-color);
 
-  border-radius: 5px;
-  color: white;
-  outline: none;
 
-}
-
-.button__calculate:hover, .button__calculate:focus {
-  cursor: pointer;
-  background: var(--second-color);
-  border-color: var(--second-color);
-}
-
-.calculate__total {
-  font-size: 20px;
-  margin-left: 10px;
-}
-
-.functional {
+.taxes__functional {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -320,7 +299,7 @@ option {
   margin-bottom: 30px;
 }
 
-.functional__result {
+.taxes__functional-result {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -331,11 +310,11 @@ option {
   font-size: 18px;
 }
 
-.functional__result--hidden {
+.taxes__functional-result--hidden {
   visibility: hidden;
 }
 
-.functional__buttons {
+.taxes__functional-buttons {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -355,7 +334,7 @@ option {
 }
 
 
-.button__save {
+.taxes__functional-buttons-save {
   background: white;
   border-radius: 5px;
   border: 2px solid var(--main-color);
@@ -363,23 +342,45 @@ option {
   outline: none;
 }
 
-.button__save:hover, .button__save:focus {
+.taxes__functional-buttons-save:hover, .taxes__functional-buttons-save:focus {
   cursor: pointer;
   color: var(--second-color);
   border: 2px solid var(--second-color);
 }
 
 
-.button__save--disabled {
+.taxes__functional-buttons-save--disabled {
   color: rgba(0,0,0,.26);
   border-color: rgba(0,0,0,.26);
 }
 
-.button__save--disabled:hover {
+.taxes__functional-buttons-save--disabled:hover {
   color: rgba(0,0,0,.26);
   border-color: rgba(0,0,0,.26);
   cursor: default;
 }
+
+.taxes__functional-buttons-calculate {
+  background: var(--main-color);
+  border: 2px solid var(--main-color);
+
+  border-radius: 5px;
+  color: white;
+  outline: none;
+
+}
+
+.taxes__functional-buttons-calculate:hover, .taxes__functional-buttons-calculate:focus {
+  cursor: pointer;
+  background: var(--second-color);
+  border-color: var(--second-color);
+}
+
+.taxes__functional-result {
+  font-size: 20px;
+  margin-left: 10px;
+}
+
 
 .total-sum {
   display: flex;
@@ -408,5 +409,10 @@ option {
   justify-content: flex-start;
   align-items: flex-start;
 }
+
+
+
+
+
 
 

@@ -6,91 +6,94 @@
   <meta name="theme-color" content="#0d47a1">
   <title>Taxes</title>
 
-  <!--<link href="css/style.css" rel="stylesheet">-->
+  <link href="css/loader.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
 
 </head>
 
 <body>
 
-<form class="taxes">
+<form class="taxes taxes--hidden">
 
   <div class="taxes__basic">
 
-    <div class="taxes__menu menu">
-      <div class="menu__name">Подсчет налогов</div>
+    <div class="taxes__title">
+      <span class="taxes__title-name">Подсчет налогов</span>
     </div>
 
-    <div class="functional">
-      <div class="functional__result functional__result--hidden">
-        <p>Общая сумма налога:</p>
-        <p class="calculate__total"></p>
+    <div class="taxes__functional">
+      <div class="taxes__functional-result taxes__functional-result--hidden">
+        <span>Общая сумма налога:</span>
+        <span class="taxes__functional-result-sum"></span>
       </div>
 
-      <div class="functional__buttons">
-        <button class="button button__calculate" >Вычислить</button>
-        <button class="button button__save" type="button">Сохранить в CSV</button>
+      <div class="taxes__functional-buttons">
+        <button class="button taxes__functional-buttons-calculate" >Вычислить</button>
+        <button class="button taxes__functional-buttons-save" type="button">Сохранить в CSV</button>
       </div>
     </div>
 
+    <div class="taxes__table">
 
-    <div class="taxes__title title">
-      <div class="title__item title__date">Дата получения дохода</div>
-      <div class="title__item title__income title__item--money">Размер дахода</div>
-      <div class="title__item title__currency">Наименование денежной единицы</div>
-      <div class="title__item title__course title__item--money">Курс валюты / за кол-во единиц</div>
-      <div class="title__item title__sum title__item--money">Сумма, BYN</div>
-      <div class="title__item title__tax title__item--money">Налог, BYN (13%)</div>
+    <div class="taxes__table-header">
+      <span class="taxes__table-header-cell taxes__table-header-date">Дата получения дохода</span>
+      <span class="taxes__table-header-cell taxes__table-header-income taxes__table-header-cell--money">Размер дахода</span>
+      <span class="taxes__table-header-cell taxes__table-header-currency">Наименование денежной единицы</span>
+      <span class="taxes__table-header-cell taxes__table-header-course taxes__table-header-cell--money">Курс валюты / за кол-во единиц</span>
+      <span class="taxes__table-header-cell taxes__table-header-sum taxes__table-header-cell--money">Сумма, BYN</span>
+      <span class="taxes__table-header-cell taxes__table-header-tax taxes__table-header-cell--money">Налог, BYN (13%)</span>
+      <span class="taxes__table-header-cell taxes__table-header-action"></span>
     </div>
 
-    <button class="button__add" type="button">+</button>
+    <button class="taxes__table-add button__add" type="button">+</button>
 
-    <div class="taxes__items">
+    <div class="taxes__table-body">
 
-      <!--<div class="tax">-->
-        <!--<div class="tax__data">-->
-          <!--<div class="cell cell__date">-->
-            <!--<input class="tax__item tax__date" value="06.01.2019" readonly>-->
+      <!--<div class="taxes__table-body-row">-->
+          <!--<div class="taxes__table-body-row-data-cell  taxes__table-body-row-data-date">-->
+            <!--<input class="taxes__table-body-row-cell-field taxes__table-body-row-data-date" value="06.01.2019" readonly>-->
           <!--</div>-->
 
-          <!--<div class="cell cell__income">-->
-            <!--<input class="tax__item tax__income tax__item&#45;&#45;money" value="0.00">-->
+          <!--<div class="taxes__table-body-row-data-cell taxes__table-body-row-data-income">-->
+            <!--<input class="taxes__table-body-row-data-cell-field taxes__table-body-row-data-income tax__item&#45;&#45;money" value="0.00">-->
           <!--</div>-->
 
-          <!--<div class="cell cell__currency">-->
-            <!--<select class="tax__item tax__currency " name="currency">-->
+          <!--<div class="taxes__table-body-row-data-cell taxes__table-body-row-data-currency">-->
+            <!--<select class="taxes__table-body-row-data-cell-field taxes__table-body-row-data-currency " name="currency">-->
               <!--<option value="rub">RUB</option>-->
               <!--<option value="usd">USD</option>-->
               <!--<option value="eur">EUR</option>-->
             <!--</select>-->
           <!--</div>-->
 
-          <!--<div class="cell cell__course cell&#45;&#45;only-read">-->
-            <!--<input class="tax__item tax__course tax__item&#45;&#45;only-read tax__item&#45;&#45;money" readonly value="0.00 / 1"-->
+          <!--<div class="taxes__table-body-row-data-cell taxes__table-body-row-data-course cell&#45;&#45;only-read">-->
+            <!--<span class="taxes__table-body-row-data-cell-field taxes__table-body-row-data-course &#45;&#45;only-read tax__item&#45;&#45;money" readonly value="0.00 / 1"-->
                    <!--tabindex="-1">-->
           <!--</div>-->
 
-          <!--<div class="cell cell__sum cell&#45;&#45;only-read">-->
-            <!--<input class="tax__item tax__sum tax__item&#45;&#45;only-read tax__item&#45;&#45;money" readonly value="0.00"-->
+          <!--<div class="taxes__table-body-row-data-cell taxes__table-body-row-data-sum cell&#45;&#45;only-read">-->
+            <!--<span class="taxes__table-body-row-data-cell-field taxes__table-body-row-data-sum &#45;&#45;only-read tax__item&#45;&#45;money" readonly value="0.00"-->
                    <!--tabindex="-1">-->
           <!--</div>-->
 
-          <!--<div class="cell cell__tax cell&#45;&#45;only-read">-->
-            <!--<input class="tax__item tax__tax tax__item&#45;&#45;only-read tax__item&#45;&#45;money" readonly value="0.00"-->
+          <!--<div class="taxes__table-body-row-data-cell taxes__table-body-row-data-tax cell&#45;&#45;only-read">-->
+            <!--<span class="taxes__table-body-row-data-cell-field taxes__table-body-row-data-tax &#45;&#45;only-read tax__item&#45;&#45;money" readonly value="0.00"-->
                    <!--tabindex="-1">-->
           <!--</div>-->
-        <!--</div>-->
 
-        <!--<button class="tax__btn-remove" type="button"></button>-->
+        <!--<button class="taxes__table-body-row-remove" type="button"></button>-->
       <!--</div>-->
 
     </div>
+    </div>
   </div>
 
-
-
-
 </form>
+
+<div class="loader-background ">
+  <div class="loader">
+    <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>  </div>
+</div>
 
 <script src="./public/main.js"></script>
 

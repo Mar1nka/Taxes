@@ -48,13 +48,13 @@ class TaxCalculation {
     taxesForm.addEventListener('submit', this.submitHandler);
 
 
-    // this.clickSaveHandler = this.clickSaveHandler.bind(this);
-    // const saveButtonElement = document.querySelector('.taxes__functional-buttons-save');
-    // saveButtonElement.addEventListener('click', this.clickSaveHandler);
+    this.clickSaveHandler = this.clickSaveHandler.bind(this);
+    const saveButtonElement = document.querySelector('.taxes__functional-buttons-save');
+    saveButtonElement.addEventListener('click', this.clickSaveHandler);
   }
 
 
-  clickSaveHandler() {
+  clickSaveHandler(event) {
     let titleData = document.querySelector('.taxes__table-header-date').textContent;
     let titleIncome = document.querySelector('.taxes__table-header-income').textContent;
     let titleCurrency = document.querySelector('.taxes__table-header-currency').textContent;
@@ -107,12 +107,14 @@ class TaxCalculation {
       csv += "\n";
     });
 
-    // const hiddenElement = document.createElement('a');
-    const hiddenElement = document.querySelector('.taxes__functional-buttons-save');
+    const hiddenElement = document.createElement('a');
+    // const hiddenElement = document.querySelector('.taxes__functional-buttons-save');
 
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
     hiddenElement.target = '_blank';
     hiddenElement.download = 'taxes.csv';
+
+    hiddenElement.dispatchEvent(new MouseEvent('click'));
 
     // hiddenElement.click();
   }
@@ -135,8 +137,6 @@ class TaxCalculation {
   submitHandler(event) {
     event.preventDefault();
     this.calculateTaxes();
-
-    this.clickSaveHandler();
   }
 
 

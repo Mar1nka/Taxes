@@ -55,6 +55,7 @@ class TaxCalculation {
 
 
   clickSaveHandler(event) {
+    console.log('clickSaveHandler');
     let titleData = document.querySelector('.taxes__table-header-date').textContent;
     let titleIncome = document.querySelector('.taxes__table-header-income').textContent;
     let titleCurrency = document.querySelector('.taxes__table-header-currency').textContent;
@@ -100,6 +101,8 @@ class TaxCalculation {
   }
 
   downloadCsv(data) {
+
+    console.log("downloadCsv");
     let csv = '';
     data.forEach((row) => {
       csv += row.join(',');
@@ -107,9 +110,11 @@ class TaxCalculation {
     });
 
     const hiddenElement = document.createElement('a');
+    hiddenElement.id = 'download';
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
     hiddenElement.target = '_blank';
     hiddenElement.download = 'taxes.csv';
+
     hiddenElement.click();
   }
 

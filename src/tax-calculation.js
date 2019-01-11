@@ -48,14 +48,13 @@ class TaxCalculation {
     taxesForm.addEventListener('submit', this.submitHandler);
 
 
-    this.clickSaveHandler = this.clickSaveHandler.bind(this);
-    const saveButtonElement = document.querySelector('.taxes__functional-buttons-save');
-    saveButtonElement.addEventListener('click', this.clickSaveHandler);
+    // this.clickSaveHandler = this.clickSaveHandler.bind(this);
+    // const saveButtonElement = document.querySelector('.taxes__functional-buttons-save');
+    // saveButtonElement.addEventListener('click', this.clickSaveHandler);
   }
 
 
-  clickSaveHandler(event) {
-    console.log('clickSaveHandler');
+  clickSaveHandler() {
     let titleData = document.querySelector('.taxes__table-header-date').textContent;
     let titleIncome = document.querySelector('.taxes__table-header-income').textContent;
     let titleCurrency = document.querySelector('.taxes__table-header-currency').textContent;
@@ -102,20 +101,20 @@ class TaxCalculation {
 
   downloadCsv(data) {
 
-    console.log("downloadCsv");
     let csv = '';
     data.forEach((row) => {
       csv += row.join(',');
       csv += "\n";
     });
 
-    const hiddenElement = document.createElement('a');
-    hiddenElement.id = 'download';
+    // const hiddenElement = document.createElement('a');
+    const hiddenElement = document.querySelector('.taxes__functional-buttons-save');
+
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
     hiddenElement.target = '_blank';
     hiddenElement.download = 'taxes.csv';
 
-    hiddenElement.click();
+    // hiddenElement.click();
   }
 
 
@@ -136,6 +135,8 @@ class TaxCalculation {
   submitHandler(event) {
     event.preventDefault();
     this.calculateTaxes();
+
+    this.clickSaveHandler();
   }
 
 

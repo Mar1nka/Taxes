@@ -311,7 +311,7 @@ option {
 
 .button {
   padding: 10px;
-  margin-left: 10px;
+  margin-left: 15px;
   box-shadow: 0 3px 6px 2px lightgrey;
   transition: all ease-in-out 0.2s;
 }
@@ -327,6 +327,8 @@ option {
   border: 2px solid var(--main-color);
   color: var(--main-color);
   outline: none;
+
+  text-decoration: none;
 
 }
 
